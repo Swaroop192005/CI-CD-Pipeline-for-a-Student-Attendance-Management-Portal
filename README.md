@@ -190,5 +190,6 @@ merge a red build.
 
 ## Status
 
-Task 6 of 15 complete — master data screens added for courses and students,
-completing the administrative side of the MVP.
+Task 6 of 15 complete — the MVP is functionally complete: attendance capture,
+search, the role-based approval workflow, the summary dashboard and the admin
+master-data screens all work end to end.
