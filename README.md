@@ -165,6 +165,7 @@ ATTENDANCE_THRESHOLD=80 SERVER_PORT=9090 scripts/app-control.sh start --port 909
 | 7 | [Jenkins Installation and CI Job](docs/07-jenkins-ci.md) |
 | 8 | [Pipeline as Code and Server Deployment](docs/08-pipeline-and-deployment.md) |
 | 9 | [Selenium Test Design and Local Execution](docs/09-selenium-tests.md) |
+| 10 | [Continuous Testing in Jenkins](docs/10-continuous-testing.md) |
 | — | [Contributing: branch policy, commits, review](CONTRIBUTING.md) |
 | — | [Evidence pack: rules and index](docs/evidence/README.md) |
 
