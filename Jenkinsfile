@@ -97,10 +97,21 @@ pipeline {
                     echo "Deploying as context '${DEPLOY_CONTEXT}' with threshold ${ATTENDANCE_THRESHOLD}%"
                     test -d "$WEBAPPS_DIR" || { echo "ERROR: $WEBAPPS_DIR not mounted"; exit 1; }
 
-                    # Remove the previously exploded directory so Tomcat redeploys
-                    # rather than serving a stale mix of old and new classes.
-                    rm -rf "${WEBAPPS_DIR}/${DEPLOY_CONTEXT}"
-                    cp target/attendance-portal.war "${WEBAPPS_DIR}/${DEPLOY_CONTEXT}.war"
+                    # Copy to a temporary name, then rename into place.
+                    #
+                    # The rename is atomic within the same filesystem, which matters
+                    # for a 55 MB artefact: Tomcat's autoDeploy scanner would
+                    # otherwise be able to pick the WAR up mid-copy and deploy a
+                    # truncated archive. The temp name ends in .tmp so the scanner,
+                    # which only matches *.war, ignores it.
+                    #
+                    # The previously exploded directory is deliberately NOT deleted
+                    # here: Tomcat creates it as root with mode 750, so the Jenkins
+                    # user cannot remove it, and Tomcat replaces it itself when it
+                    # sees a newer WAR. Trying to delete it is what broke build #5.
+                    TMP="${WEBAPPS_DIR}/.${DEPLOY_CONTEXT}.war.tmp"
+                    cp target/attendance-portal.war "$TMP"
+                    mv -f "$TMP" "${WEBAPPS_DIR}/${DEPLOY_CONTEXT}.war"
                     ls -lh "${WEBAPPS_DIR}/"
                 '''
             }
@@ -115,7 +126,7 @@ pipeline {
                     set -e
                     URL="http://localhost:${TOMCAT_PORT}/${DEPLOY_CONTEXT}/actuator/health"
                     echo "Waiting for ${URL}"
-                    for i in $(seq 1 60); do
+                    for i in $(seq 1 120); do
                         code=$(curl -s -o /tmp/health.json -w "%{http_code}" --noproxy localhost --max-time 4 "$URL" || true)
                         if [ "$code" = "200" ]; then
                             echo "Healthy after ${i}s:"; cat /tmp/health.json; echo
@@ -123,7 +134,7 @@ pipeline {
                         fi
                         sleep 1
                     done
-                    echo "ERROR: deployed application did not become healthy within 60s"
+                    echo "ERROR: deployed application did not become healthy within 120s"
                     exit 1
                 '''
             }
