@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/layout :: head('Mark attendance')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: topbar}"></header>
+<main>
+  <h1>Mark attendance</h1>
+  <p class="sub">Pick a course and session date, then set each student's status.</p>
+
+  <div class="alert err" th:if="${error}" th:text="${error}" data-testid="form-error"></div>
+
+  <div class="card">
+    <h2>Session</h2>
+    <form class="inline" method="get" th:action="@{/attendance/new}">
+      <div>
+        <label for="courseId">Course</label>
+        <select id="courseId" name="courseId" data-testid="course-select">
+          <option value="">— select —</option>
+          <option th:each="c : ${courses}" th:value="${c.id}"
+                  th:text="${c.displayName}" th:selected="${c.id == selectedCourseId}">CS301</option>
+        </select>
+      </div>
+      <div>
+        <label for="sessionDate">Session date</label>
+        <input type="date" id="sessionDate" name="sessionDate"
+               th:value="${sessionDate}" data-testid="session-date">
+      </div>
+      <button class="btn secondary" type="submit" data-testid="load-roster">Load roster</button>
+    </form>
+  </div>
+
+  <div class="card" th:if="${roster != null}">
+    <h2 th:text="'Roster — ' + ${course.displayName}">Roster</h2>
+    <form method="post" th:action="@{/attendance}">
+      <input type="hidden" name="courseId" th:value="${selectedCourseId}">
+      <input type="hidden" name="sessionDate" th:value="${sessionDate}">
+      <table data-testid="roster-table">
+        <thead>
+          <tr><th>Roll no.</th><th>Student</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr th:each="e : ${roster}">
+            <td class="mono" th:text="${e.student.rollNumber}">22CS001</td>
+            <td th:text="${e.student.fullName}">Name</td>
+            <td>
+              <select th:name="'status-' + ${e.student.id}" th:disabled="${e.locked}"
+                      th:attr="data-testid='status-' + ${e.student.rollNumber}">
+                <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"
+                        th:selected="${s == e.status}">PRESENT</option>
+              </select>
+            </td>
+            <td>
+              <span class="locked" th:if="${e.locked}"
+                    th:text="'locked — ' + ${e.workflowState}">locked</span>
+              <span class="badge b-DRAFT" th:if="${e.alreadyRecorded and not e.locked}">saved</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:16px">
+        <button class="btn" type="submit" data-testid="save-attendance">Save attendance</button>
+      </p>
+    </form>
+  </div>
+
+  <div class="card" th:if="${roster == null}">
+    <p class="empty" data-testid="roster-prompt">Select a course and press “Load roster”.</p>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sign in — Student Attendance Management Portal</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<div class="login-wrap">
+  <h1>Attendance Portal</h1>
+  <p class="sub">Sign in to continue</p>
+  <div class="card">
+    <div class="alert err" th:if="${param.error}" data-testid="login-error">
+      Invalid username or password
+    </div>
+    <div class="alert ok" th:if="${param.loggedOut}" data-testid="logout-message">
+      You have been signed out.
+    </div>
+    <form th:action="@{/login}" method="post">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" data-testid="username" autofocus required>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" data-testid="password" required>
+      <button class="btn" type="submit" data-testid="login-submit">Sign in</button>
+    </form>
+    <div class="creds">
+      <strong>Demo accounts</strong><br>
+      Faculty: <code>faculty1 / faculty123</code><br>
+      Admin: <code>admin / admin123</code><br>
+      Student: <code>22cs001 / student123</code>
+    </div>
+  </div>
+</div>
+</body>
+</html>
