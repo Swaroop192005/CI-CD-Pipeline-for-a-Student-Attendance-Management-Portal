@@ -66,3 +66,4 @@ ansible/vault-password*
 # --- OS ---
 .DS_Store
 Thumbs.db
+deploy/
