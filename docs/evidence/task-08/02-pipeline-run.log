@@ -1,0 +1,36 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/p8.sh
+# executed 2026-10-01 15:38:42 UTC on Linux 6.18.44-fc-v50
+
+Pipeline build #3 — stages and deployment:
+
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] { (Checkout)
+[Pipeline] { (Build)
+[INFO] BUILD SUCCESS
+[Pipeline] { (Test)
+[INFO] Tests run: 37, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[Pipeline] { (Package)
+[INFO] BUILD SUCCESS
+[Pipeline] { (Deploy)
++ echo Deploying as context 'attendance' with threshold 75%
+Deploying as context 'attendance' with threshold 75%
++ cp target/attendance-portal.war /deploy/webapps/attendance.war
+[Pipeline] { (Verify)
++ echo Healthy after 14s:
+Healthy after 14s:
+{"status":"UP","groups":["liveness","readiness"]}+ echo
+[Pipeline] { (Declarative: Post Actions)
+Finished: SUCCESS
+
+Parameters in effect for this run:
+  DEPLOY_CONTEXT         = attendance
+  ATTENDANCE_THRESHOLD   = 75
+  TOMCAT_PORT            = 8082
+  SKIP_DEPLOY            = False
+
+Live on Tomcat:
+  GET /attendance/login          -> HTTP 200
+  GET /attendance/actuator/health -> {"status":"UP","groups":["liveness","readiness"]}
+
+[exit code: 0]
