@@ -158,7 +158,7 @@ Every entry below was hit and solved during this project.
 | `github.githubassets.com` | GitHub UI renders unstyled | Evidence taken from the GitHub REST API |
 | `googlechromelabs.github.io` | No ChromeDriver download | Fetch the matching driver from `storage.googleapis.com` |
 | `cdn.jsdelivr.net` | No Mermaid from CDN | Install Mermaid from npm |
-| Tag pushes (`refs/tags/*`, HTTP 403) | `v1.0.0` can't be pushed | Tag exists locally; publish from a machine with direct access |
+| Tag pushes (`refs/tags/*`, HTTP 403) | `v1.0.0` can't be pushed from CI | Pushed from a developer machine — **now live on GitHub** |
 
 ---
 
@@ -166,9 +166,12 @@ Every entry below was hit and solved during this project.
 
 Stated plainly, because a report that claims no limitations is not credible.
 
-1. **The `v1.0.0` tag is local only.** Tag pushes return HTTP 403 here. Diagnosed
-   across five retries, HTTP/1.1, and a lightweight probe tag before concluding it
-   was policy. [Commands to publish it](06-mvp-completion.md#4-release-tag-v100).
+1. **~~The `v1.0.0` tag is local only.~~ Resolved.** The tag is now published at
+   [`v1.0.0`](https://github.com/Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/releases/tag/v1.0.0)
+   → `c0948c6`. Tag pushes return HTTP 403 from the build environment (a policy
+   denial on `refs/tags/*`, diagnosed across five retries, HTTP/1.1 and a
+   lightweight probe tag), so it was pushed from a developer machine instead.
+   [Details](06-mvp-completion.md#4-release-tag-v100).
 2. **Jenkins is pinned to a copied plugin set.** Plugins came from
    `jenkinsci/blueocean` because the Jenkins update sites are blocked. Two SSH
    plugins fail to load (unused). On a normal network, install plugins properly.

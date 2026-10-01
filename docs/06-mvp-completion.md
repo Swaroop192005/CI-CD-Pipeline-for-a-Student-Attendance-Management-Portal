@@ -142,36 +142,40 @@ An annotated tag marks the release-ready baseline at `c0948c6`.
 
 ![Release tag](evidence/task-06/09-release-tag.png)
 
-### ⚠️ The tag could not be pushed to GitHub — environment policy, not an error in the work
+### Published on GitHub — after a detour
+
+The tag is live at
+[`v1.0.0`](https://github.com/Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/releases/tag/v1.0.0),
+pointing at `c0948c6`.
+
+It could **not** be pushed from the build environment, which refuses tag pushes:
 
 ```
 error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403
-send-pack: unexpected disconnect while reading sideband packet
 ```
 
-**Tag pushes (`refs/tags/*`) are refused with HTTP 403 in this build environment,
-while branch pushes succeed.** This was diagnosed rather than guessed:
-
-1. Five retries with exponential backoff — identical failure each time.
-2. Forcing HTTP/1.1 — ruled out HTTP/2 multiplexing.
-3. A **lightweight** probe tag failed identically — ruled out the annotation size.
-4. The proxy reported `recentRelayFailures: []` — the proxy was not aborting it.
-5. Re-running with tracing surfaced the real cause: **HTTP 403**.
-
-The agent-proxy guidance is explicit that a 403 is a policy denial and must be
+That was diagnosed rather than guessed: five retries with exponential backoff,
+forcing HTTP/1.1 to rule out HTTP/2 multiplexing, a **lightweight probe tag**
+which failed identically (ruling out the annotation size), and confirming the
+proxy reported `recentRelayFailures: []`. Only then did tracing surface the real
+cause — **HTTP 403, a policy denial on `refs/tags/*`** while branch pushes
+succeed normally. The agent-proxy guidance is explicit that a 403 must be
 reported rather than retried, so retrying stopped there.
 
-**The tag is real and committed to local history.** To publish it, run from a
-machine with direct GitHub access:
+The tag was therefore published from a developer machine with direct GitHub
+access:
 
 ```bash
-git fetch origin
+git clone https://github.com/Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal.git
+cd CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal
+git checkout claude/determined-goldberg-ml3brm
 git tag -a v1.0.0 c0948c6 -m "v1.0.0 — MVP: Student Attendance Management Portal"
-git push origin v1.0.0
+git push origin v1.0.0        # → * [new tag]  v1.0.0 -> v1.0.0
 ```
 
-Or create it through the GitHub UI: **Releases → Draft a new release → tag
-`v1.0.0` → target `c0948c6`**.
+**The lesson worth keeping:** an environment restriction is not a defect in the
+work. The right response was to establish *exactly* what was blocked, record it,
+and route around it — not to retry a policy denial or quietly drop the deliverable.
 
 ---
 
