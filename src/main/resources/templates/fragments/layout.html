@@ -12,6 +12,9 @@
   <nav>
     <a th:href="@{/attendance}" sec:authorize="hasAnyRole('FACULTY','ADMIN')" data-testid="nav-records">Records</a>
     <a th:href="@{/attendance/new}" sec:authorize="hasAnyRole('FACULTY','ADMIN')" data-testid="nav-new">Mark attendance</a>
+    <a th:href="@{/attendance/search}" sec:authorize="hasAnyRole('FACULTY','ADMIN')" data-testid="nav-search">Search</a>
+    <a th:href="@{/dashboard}" sec:authorize="hasRole('ADMIN')" data-testid="nav-dashboard">Dashboard</a>
+    <a th:href="@{/my-attendance}" sec:authorize="hasRole('STUDENT')" data-testid="nav-my-attendance">My attendance</a>
   </nav>
   <div class="userbox">
     <span data-testid="current-user" sec:authentication="name">user</span>

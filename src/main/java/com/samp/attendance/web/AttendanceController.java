@@ -1,7 +1,9 @@
 package com.samp.attendance.web;
 
 import com.samp.attendance.domain.AttendanceStatus;
+import com.samp.attendance.domain.WorkflowState;
 import com.samp.attendance.service.AttendanceService;
+import com.samp.attendance.service.WorkflowService;
 import com.samp.attendance.service.RosterEntry;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,9 +32,11 @@ public class AttendanceController {
     private static final String STATUS_FIELD_PREFIX = "status-";
 
     private final AttendanceService attendance;
+    private final WorkflowService workflow;
 
-    public AttendanceController(AttendanceService attendance) {
+    public AttendanceController(AttendanceService attendance, WorkflowService workflow) {
         this.attendance = attendance;
+        this.workflow = workflow;
     }
 
     /** US-07 — paged list, newest session first. */
@@ -119,5 +123,78 @@ public class AttendanceController {
         MalformedAttendanceFieldException(String field, String value, Throwable cause) {
             super("Malformed attendance field '" + field + "' with value '" + value + "'", cause);
         }
+    }
+
+    /** US-09 — search and filter, every criterion optional. */
+    @GetMapping("/search")
+    public String search(@RequestParam(required = false) String rollNumber,
+                         @RequestParam(required = false) Long courseId,
+                         @RequestParam(required = false)
+                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                         @RequestParam(required = false)
+                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+                         @RequestParam(required = false) WorkflowState state,
+                         @RequestParam(defaultValue = "0") int page,
+                         Model model) {
+
+        var results = attendance.search(rollNumber, courseId, from, to, state,
+                                        PageRequest.of(Math.max(page, 0), PAGE_SIZE));
+
+        model.addAttribute("records", results);
+        model.addAttribute("courses", attendance.allCourses());
+        model.addAttribute("states", WorkflowState.values());
+        model.addAttribute("currentPage", results.getNumber());
+        model.addAttribute("totalPages", results.getTotalPages());
+        model.addAttribute("rollNumber", rollNumber);
+        model.addAttribute("selectedCourseId", courseId);
+        model.addAttribute("from", from);
+        model.addAttribute("to", to);
+        model.addAttribute("selectedState", state);
+        model.addAttribute("searched", true);
+        return "attendance/search";
+    }
+
+    /** US-11 — submit a draft for approval. */
+    @PostMapping("/{id}/submit")
+    public String submit(@PathVariable Long id, Principal principal, RedirectAttributes redirect) {
+        return runTransition(() -> workflow.submit(id, principal.getName()),
+                             "Record submitted for approval", redirect);
+    }
+
+    /** US-12 — approve (ADMIN only; the service enforces it). */
+    @PostMapping("/{id}/approve")
+    public String approve(@PathVariable Long id, Principal principal, RedirectAttributes redirect) {
+        return runTransition(() -> workflow.approve(id, principal.getName()),
+                             "Record approved", redirect);
+    }
+
+    /** US-13 — reject with a mandatory remark (ADMIN only). */
+    @PostMapping("/{id}/reject")
+    public String reject(@PathVariable Long id, @RequestParam(required = false) String remark,
+                         Principal principal, RedirectAttributes redirect) {
+        return runTransition(() -> workflow.reject(id, principal.getName(), remark),
+                             "Record rejected", redirect);
+    }
+
+    /** Send a rejected record back to DRAFT for rework. */
+    @PostMapping("/{id}/revise")
+    public String revise(@PathVariable Long id, Principal principal, RedirectAttributes redirect) {
+        return runTransition(() -> workflow.revise(id, principal.getName()),
+                             "Record returned to draft", redirect);
+    }
+
+    /**
+     * Turns a refused transition into a message on the records page instead of an
+     * error page. The refusal itself still happens in the service — this only
+     * decides how it is presented.
+     */
+    private String runTransition(Runnable action, String successMessage, RedirectAttributes redirect) {
+        try {
+            action.run();
+            redirect.addFlashAttribute("message", successMessage);
+        } catch (WorkflowService.IllegalTransitionException | WorkflowService.RemarkRequiredException e) {
+            redirect.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/attendance";
     }
 }

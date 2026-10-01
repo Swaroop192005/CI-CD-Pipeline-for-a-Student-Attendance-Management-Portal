@@ -120,6 +120,23 @@ public class AttendanceService {
         return records.findAllNewestFirst(pageable);
     }
 
+    /**
+     * Search with every filter optional and combinable (US-09).
+     *
+     * <p>Blank strings are normalised to null so that an untouched form field
+     * means "no filter" rather than "match the empty string".
+     */
+    @Transactional(readOnly = true)
+    public Page<AttendanceRecord> search(String rollNumber, Long courseId,
+                                         LocalDate from, LocalDate to,
+                                         WorkflowState state, Pageable pageable) {
+        return records.search(blankToNull(rollNumber), courseId, from, to, state, pageable);
+    }
+
+    private static String blankToNull(String value) {
+        return (value == null || value.isBlank()) ? null : value.trim();
+    }
+
     /** Thrown when a session date is in the future (AC-06.4). */
     public static class FutureSessionDateException extends RuntimeException {
         public FutureSessionDateException() {

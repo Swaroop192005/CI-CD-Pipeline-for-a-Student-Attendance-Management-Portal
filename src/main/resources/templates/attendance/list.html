@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head th:replace="~{fragments/layout :: head('Attendance records')}"></head>
 <body>
 <header th:replace="~{fragments/layout :: topbar}"></header>
@@ -8,13 +9,14 @@
   <p class="sub">Newest session first, 20 per page.</p>
 
   <div class="alert ok" th:if="${message}" th:text="${message}" data-testid="save-confirmation"></div>
+  <div class="alert err" th:if="${error}" th:text="${error}" data-testid="workflow-error"></div>
 
   <div class="card">
     <table data-testid="records-table">
       <thead>
         <tr>
           <th>Roll no.</th><th>Student</th><th>Course</th>
-          <th>Session date</th><th>Status</th><th>Workflow</th><th>Last updated by</th>
+          <th>Session date</th><th>Status</th><th>Workflow</th><th>Last updated by</th><th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -28,11 +30,37 @@
                     th:attr="data-testid='status-' + ${r.student.rollNumber}">PRESENT</span></td>
           <td><span class="badge" th:classappend="'b-' + ${r.workflowState}"
                     th:text="${r.workflowState}"
-                    th:attr="data-testid='state-' + ${r.id}">DRAFT</span></td>
+                    th:attr="data-testid='state-' + ${r.id}">DRAFT</span>
+              <div class="remark" th:if="${r.remark}" th:text="${r.remark}"></div></td>
           <td th:text="${r.updatedBy != null} ? ${r.updatedBy.fullName} : '—'">—</td>
+          <td class="actions">
+            <form th:if="${r.workflowState.name() == 'DRAFT'}" method="post"
+                  th:action="@{'/attendance/' + ${r.id} + '/submit'}" style="display:inline">
+              <button class="btn tiny" type="submit"
+                      th:attr="data-testid='submit-' + ${r.id}">Submit</button>
+            </form>
+            <span sec:authorize="hasRole('ADMIN')" th:if="${r.workflowState.name() == 'SUBMITTED'}">
+              <form method="post" th:action="@{'/attendance/' + ${r.id} + '/approve'}" style="display:inline">
+                <button class="btn tiny" type="submit"
+                        th:attr="data-testid='approve-' + ${r.id}">Approve</button>
+              </form>
+              <form method="post" th:action="@{'/attendance/' + ${r.id} + '/reject'}" style="display:inline">
+                <input type="text" name="remark" placeholder="reason" class="tiny-input"
+                       th:attr="data-testid='reject-remark-' + ${r.id}">
+                <button class="btn tiny danger" type="submit"
+                        th:attr="data-testid='reject-' + ${r.id}">Reject</button>
+              </form>
+            </span>
+            <form th:if="${r.workflowState.name() == 'REJECTED'}" method="post"
+                  th:action="@{'/attendance/' + ${r.id} + '/revise'}" style="display:inline">
+              <button class="btn tiny secondary" type="submit"
+                      th:attr="data-testid='revise-' + ${r.id}">Revise</button>
+            </form>
+            <span class="locked" th:if="${r.workflowState.name() == 'APPROVED'}">final</span>
+          </td>
         </tr>
         <tr th:if="${records.totalElements == 0}">
-          <td colspan="7" class="empty" data-testid="records-empty">
+          <td colspan="8" class="empty" data-testid="records-empty">
             No attendance records yet. Use “Mark attendance” to record a session.
           </td>
         </tr>
