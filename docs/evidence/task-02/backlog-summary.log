@@ -1,0 +1,10 @@
+$ sh -c echo 'Backlog: stories by epic and points' && grep -c '^| US-' docs/02-agile-planning.md && grep -oE '^\| US-[0-9]+' docs/02-agile-planning.md | sort -u | wc -l && echo '--- acceptance criteria defined ---' && grep -c 'AC-' docs/02-agile-planning.md
+# executed 2026-10-01 13:51:18 UTC on Linux 6.18.44-fc-v50
+
+
+25
+24
+--- acceptance criteria defined ---
+64
+
+[exit code: 0]

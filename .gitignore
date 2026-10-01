@@ -1,0 +1,22 @@
+# Dependencies (expanded in Task 4)
+node_modules/
+scripts/capture/node_modules
+
+# Build output
+target/
+*.war
+*.jar
+*.class
+
+# Local/IDE
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Runtime
+*.log
+!docs/evidence/**/*.log
+*.db
+*.mv.db
+*.trace.db

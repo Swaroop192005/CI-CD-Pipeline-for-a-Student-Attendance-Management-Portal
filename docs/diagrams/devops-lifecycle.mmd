@@ -1,0 +1,25 @@
+%% DevOps lifecycle for the Student Attendance Management Portal.
+%% Single source of truth: GitHub renders this natively, and
+%% scripts/capture/render-mermaid.js renders it to PNG/SVG for the report.
+flowchart LR
+    classDef plan fill:#ddf4ff,stroke:#0969da,stroke-width:1.5px,color:#0a3069
+    classDef dev  fill:#dafbe1,stroke:#1a7f37,stroke-width:1.5px,color:#0a3622
+    classDef ci   fill:#fff8c5,stroke:#9a6700,stroke-width:1.5px,color:#4d2d00
+    classDef cd   fill:#ffe8d4,stroke:#bc4c00,stroke-width:1.5px,color:#762c00
+    classDef ops  fill:#fbefff,stroke:#8250df,stroke-width:1.5px,color:#3e1f79
+    classDef gate fill:#ffebe9,stroke:#cf222e,stroke-width:2.5px,color:#82071e
+
+    P["<b>1 · PLAN</b><br/>Backlog, user stories<br/><i>Kanban — T1-T2</i>"]:::plan
+    C["<b>2 · CODE</b><br/>Spring Boot, branches, PR<br/><i>Git / GitHub — T3-T6</i>"]:::dev
+    B["<b>3 · BUILD</b><br/>Compile, package WAR<br/><i>Maven + Jenkins — T7-T8</i>"]:::ci
+    T["<b>4 · TEST</b><br/>JUnit + Selenium<br/><i>Jenkins reports — T9-T10</i>"]:::ci
+    G{"<b>QUALITY</b><br/><b>GATE</b>"}:::gate
+    R["<b>5 · RELEASE</b><br/>Versioned image → registry<br/><i>Docker — T11-T12</i>"]:::cd
+    D["<b>6 · DEPLOY</b><br/>Fresh container, auto<br/><i>Jenkins CD — T12</i>"]:::cd
+    O["<b>7 · OPERATE</b><br/>Provision, idempotent, rollback<br/><i>Ansible — T13-T14</i>"]:::ops
+    M["<b>8 · MONITOR</b><br/>/actuator/health, logs<br/><i>T14-T15</i>"]:::ops
+
+    P --> C --> B --> T --> G
+    G -- "pass" --> R --> D --> O --> M
+    G -- "fail — deploy blocked" --> C
+    M -. "feedback: defects, metrics, new stories" .-> P

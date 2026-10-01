@@ -1,0 +1,48 @@
+$ git show --stat --no-patch HEAD
+# executed 2026-10-01 13:51:38 UTC on Linux 6.18.44-fc-v50
+
+[33mcommit d74122be7748befd582684a5dc8b2d58852aa2a4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mclaude/determined-goldberg-ml3brm[m[33m)[m[m
+Author: Swaroop192005 <naikswaroop1910@gmail.com>[m
+Date:   Thu Oct 1 13:51:38 2026 +0000[m
+[m
+    docs(task-02): add backlog, sprint plan, Definition of Done and DevOps workflow[m
+    [m
+    Turn the frozen Task 1 scope into an executable plan.[m
+    [m
+    Stories and backlog[m
+    - 24 user stories across 6 epics (access, master data, attendance capture,[m
+      approval workflow, dashboard, delivery pipeline), each with testable[m
+      Given/When/Then acceptance criteria rather than prose.[m
+    - Acceptance criteria are traced back to the Task 1 success criteria (S1-S18),[m
+      so every measurable target has a story that proves it.[m
+    - Backlog prioritised with MoSCoW and estimated at 97 points, each story mapped[m
+      to the task that delivers it.[m
+    [m
+    Process[m
+    - Scrumban: 5 sprints over the 15 tasks, with a Kanban board whose columns have[m
+      explicit entry rules and WIP limits, so an impediment stays visible instead of[m
+      being worked around.[m
+    - Definition of Ready (7 conditions) and Definition of Done (14 conditions[m
+      spanning code, tests, pipeline and evidence), including an explicit "NOT Done"[m
+      list that rules out skipped tests and unverified screenshots.[m
+    [m
+    Workflow[m
+    - DevOps lifecycle diagram, Plan through Monitor, naming the tool at each stage[m
+      and placing the quality gate between Test and Release. Authored as Mermaid so[m
+      GitHub renders it natively, and rendered to PNG/SVG for the report.[m
+    - Stage-to-tool mapping table and the feedback loop that Task 10 demonstrates[m
+      concretely (inject defect, gate blocks deploy, fix, rerun to green).[m
+    [m
+    Tooling[m
+    - scripts/capture/render-mermaid.js renders committed .mmd sources to PNG/SVG.[m
+      Mermaid is declared in scripts/capture/package.json rather than vendored, as[m
+      the bundle is ~3.5 MB; the renderer pins the SVG to its own viewBox because[m
+      Mermaid emits width="100%", which otherwise collapses the diagram to the width[m
+      of the surrounding caption.[m
+    - .gitignore added, retaining docs/evidence/**/*.log so evidence logs stay[m
+      committed alongside the screenshots rendered from them.[m
+    [m
+    Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>[m
+    Claude-Session: https://claude.ai/code/session_01VuE58DFZzXcMeu7bqLZ2L3[m
+[K
+[exit code: 0]

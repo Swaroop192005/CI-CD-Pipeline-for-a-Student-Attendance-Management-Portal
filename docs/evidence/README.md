@@ -72,5 +72,19 @@ These rules are what make the pack worth anything at a viva:
 |---|---|---|
 | 00 | `framework-smoke-test.png` / `.log` | Terminal capture proving itself on a real `git log` |
 | 00 | `framework-web-selftest.png` | Browser capture proving step automation (type → click → wait) against a live local server |
+| 01 | `git-commit-evidence.png` / `.log` | The Task 1 baseline commit, author, date and message |
+| 01 | `deliverable-structure.png` / `.log` | Documents produced by Task 1 and their sizes |
+| 02 | `devops-lifecycle.png` | DevOps lifecycle Plan→Monitor with the tool used at each stage, rendered from `docs/diagrams/devops-lifecycle.mmd` |
+| 02 | `kanban-board.png` | Board state at end of Task 2, showing WIP limits and the 24 backlog stories |
+| 02 | `git-commit-evidence.png` / `.log` | The Task 2 commit |
 
 *(the table is extended as each task lands)*
+
+## A note on the two rendered diagrams
+
+`devops-lifecycle.png` and `kanban-board.png` are **renders of committed source**,
+not captures of a running system — there is no system to run yet at Task 2. Their
+sources are `docs/diagrams/devops-lifecycle.mmd` (also rendered natively by GitHub)
+and `docs/diagrams/kanban-board.html`, both committed, so each image can be
+regenerated and checked against its source. From Task 5 onward the browser
+evidence is captured from a genuinely running server instead.

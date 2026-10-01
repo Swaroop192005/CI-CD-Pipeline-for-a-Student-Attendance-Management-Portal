@@ -1,0 +1,62 @@
+<!doctype html><html><head><meta charset="utf-8"><title>SAMP Kanban board</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fff;padding:26px;font-family:system-ui,-apple-system,"DejaVu Sans",sans-serif;color:#1f2328}
+h1{font-size:19px;font-weight:650;margin-bottom:3px}
+.sub{font-size:12px;color:#656d76;margin-bottom:18px;font-family:"DejaVu Sans Mono",monospace}
+.board{display:flex;gap:12px;align-items:flex-start}
+.col{flex:1;min-width:168px;background:#f6f8fa;border:1px solid #d0d7de;border-radius:9px;padding:10px}
+.col h2{font-size:12.5px;font-weight:650;text-transform:uppercase;letter-spacing:.4px;display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;color:#424a53}
+.wip{font-size:10px;font-weight:600;background:#eaeef2;color:#656d76;border-radius:20px;padding:2px 7px}
+.wip.lim{background:#fff1e5;color:#bc4c00}
+.card{background:#fff;border:1px solid #d0d7de;border-left-width:3px;border-radius:6px;padding:7px 9px;margin-bottom:7px;font-size:11.5px;line-height:1.35}
+.card b{display:block;font-size:11px;color:#0969da;margin-bottom:1px;font-family:"DejaVu Sans Mono",monospace}
+.e1{border-left-color:#0969da}.e2{border-left-color:#1a7f37}.e3{border-left-color:#9a6700}
+.e4{border-left-color:#bc4c00}.e5{border-left-color:#8250df}.e6{border-left-color:#cf222e}
+.pts{float:right;background:#eaeef2;border-radius:20px;padding:1px 6px;font-size:9.5px;color:#656d76;font-weight:600}
+.done{background:#dafbe1;border-left-color:#1a7f37}
+.empty{color:#8c959f;font-size:11px;font-style:italic;padding:8px 2px}
+.legend{margin-top:16px;font-size:11px;color:#656d76;display:flex;gap:16px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:5px}
+.sw{width:10px;height:10px;border-radius:2px;display:inline-block}
+</style></head><body>
+<h1>Student Attendance Management Portal — Kanban board</h1>
+<div class="sub">Scrumban · board state at end of Task 2 · WIP limits enforced on In Progress / In Review / Testing</div>
+<div class="board">
+  <div class="col"><h2>Backlog <span class="wip">7</span></h2>
+    <div class="card e6"><b>US-18</b>Automated build on commit<span class="pts">5</span></div>
+    <div class="card e6"><b>US-19</b>Pipeline as code<span class="pts">5</span></div>
+    <div class="card e6"><b>US-20</b>Selenium regression suite<span class="pts">8</span></div>
+    <div class="card e6"><b>US-21</b>Quality gate blocks deploy<span class="pts">5</span></div>
+    <div class="card e6"><b>US-22</b>Versioned container release<span class="pts">5</span></div>
+    <div class="card e6"><b>US-23</b>Automated deployment<span class="pts">5</span></div>
+    <div class="card e6"><b>US-24</b>Provisioning &amp; rollback<span class="pts">8</span></div>
+  </div>
+  <div class="col"><h2>Ready <span class="wip lim">17 / 6*</span></h2>
+    <div class="card e6"><b>US-17</b>Repo + branch policy<span class="pts">3</span></div>
+    <div class="card e1"><b>US-01</b>Role-based login<span class="pts">3</span></div>
+    <div class="card e3"><b>US-06</b>Record attendance<span class="pts">8</span></div>
+    <div class="card e3"><b>US-07</b>View records (paged)<span class="pts">3</span></div>
+    <div class="card e1"><b>US-02</b>Role-restricted nav<span class="pts">3</span></div>
+    <div class="card e3"><b>US-09</b>Search &amp; filter<span class="pts">5</span></div>
+    <div class="card e4"><b>US-11-14</b>Approval workflow<span class="pts">13</span></div>
+    <div class="card e5"><b>US-15-16</b>Dashboard<span class="pts">7</span></div>
+    <div class="empty">+ US-03, 04, 05, 08, 10</div>
+  </div>
+  <div class="col"><h2>In Progress <span class="wip lim">0 / 2</span></h2><div class="empty">— empty —</div></div>
+  <div class="col"><h2>In Review <span class="wip lim">0 / 2</span></h2><div class="empty">— empty —</div></div>
+  <div class="col"><h2>Testing <span class="wip lim">0 / 2</span></h2><div class="empty">— empty —</div></div>
+  <div class="col"><h2>Done <span class="wip">2</span></h2>
+    <div class="card done"><b>TASK 1</b>Problem definition &amp; frozen scope</div>
+    <div class="card done"><b>TASK 2</b>Agile planning &amp; DevOps workflow</div>
+  </div>
+</div>
+<div class="legend">
+  <span><i class="sw" style="background:#0969da"></i>E1 Access</span>
+  <span><i class="sw" style="background:#1a7f37"></i>E2 Master data</span>
+  <span><i class="sw" style="background:#9a6700"></i>E3 Attendance capture</span>
+  <span><i class="sw" style="background:#bc4c00"></i>E4 Approval workflow</span>
+  <span><i class="sw" style="background:#8250df"></i>E5 Dashboard</span>
+  <span><i class="sw" style="background:#cf222e"></i>E6 Delivery pipeline</span>
+  <span>* Ready is over its soft limit by design until Sprint 2 starts</span>
+</div>
+</body></html>

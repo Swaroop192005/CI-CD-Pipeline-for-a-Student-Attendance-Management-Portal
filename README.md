@@ -12,6 +12,7 @@ DevOps toolchain: **Git/GitHub → Jenkins → Maven → Selenium → Docker →
 | Task | Document |
 |---|---|
 | 1 | [Problem Definition and Scope](docs/01-problem-definition-and-scope.md) |
+| 2 | [Agile Planning and DevOps Workflow](docs/02-agile-planning.md) |
 
 ## Evidence
 
@@ -21,4 +22,4 @@ real commands with their raw logs, and real pages served to headless Chromium.
 
 ## Current status
 
-Task 1 of 15 complete — scope frozen.
+Task 2 of 15 complete — scope frozen, backlog and Definition of Done agreed.
