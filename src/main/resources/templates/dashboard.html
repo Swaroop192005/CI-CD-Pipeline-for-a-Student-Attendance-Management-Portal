@@ -47,7 +47,7 @@
       </thead>
       <tbody>
         <tr th:each="row : ${rows}" th:classappend="${row.belowThreshold} ? 'below' : ''"
-            th:attr="data-testid=${row.belowThreshold} ? 'below-threshold-row' : 'dashboard-row'">
+            th:attr="data-testid='dashboard-row'">
           <td class="mono" th:text="${row.rollNumber}">22CS001</td>
           <td th:text="${row.studentName}">Name</td>
           <td class="mono" th:text="${row.courseCode}">CS301</td>
@@ -57,7 +57,7 @@
             <span class="pct" th:classappend="${row.belowThreshold} ? 'low' : 'good'"
                   th:text="${row.displayPercentage()}"
                   th:attr="data-testid='pct-' + ${row.rollNumber} + '-' + ${row.courseCode}">0%</span>
-            <span class="flag" th:if="${row.belowThreshold}">SHORTAGE</span>
+            
           </td>
         </tr>
         <tr th:if="${#lists.isEmpty(rows)}">
