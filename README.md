@@ -170,6 +170,7 @@ ATTENDANCE_THRESHOLD=80 SERVER_PORT=9090 scripts/app-control.sh start --port 909
 | 12 | [Jenkins-Docker Continuous Deployment](docs/12-jenkins-docker-cd.md) |
 | 13 | [Configuration Management Script](docs/13-configuration-management.md) |
 | 14 | [Automated Provisioning and Reliability Validation](docs/14-provisioning-and-reliability.md) |
+| 15 | **[Final Report, Troubleshooting, Limitations](docs/15-final-report.md)** |
 | — | [Contributing: branch policy, commits, review](CONTRIBUTING.md) |
 | — | [Evidence pack: rules and index](docs/evidence/README.md) |
 
@@ -199,6 +200,10 @@ merge a red build.
 
 ## Status
 
-Task 6 of 15 complete — the MVP is functionally complete: attendance capture,
-search, the role-based approval workflow, the summary dashboard and the admin
-master-data screens all work end to end.
+**All 15 tasks complete.** The full workflow runs end to end: a Git commit drives a
+Jenkins build, 37 unit tests and 6 Selenium journeys, a versioned Docker image
+published to a registry, and deployment to Tomcat, to a container, and to an
+Ansible-provisioned node — with no manual step.
+
+See the **[final report](docs/15-final-report.md)** for the end-to-end
+demonstration, troubleshooting guide, limitations and future enhancements.

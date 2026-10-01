@@ -67,6 +67,6 @@ successes, and every terminal image ships with the log it was rendered from.
 | 12 | Jenkins-Docker Continuous Deployment | ✅ Done | `Jenkinsfile`, `docs/12-jenkins-docker-cd.md` | `evidence/task-12/` |
 | 13 | Configuration Management Script | ✅ Done | `ansible/`, `docs/13-configuration-management.md` | `evidence/task-13/` |
 | 14 | Automated Provisioning and Reliability Validation | ✅ Done | `docs/14-provisioning-and-reliability.md` | `evidence/task-14/` |
-| 15 | Final End-to-End Release, Documentation and Viva | ⬜ Pending | `docs/15-final-report.md` | `evidence/task-15/` |
+| 15 | Final End-to-End Release, Documentation and Viva | ✅ Done | `docs/15-final-report.md` | `evidence/task-15/` |
 
 Legend: ⬜ Pending · 🟨 In progress · ✅ Done

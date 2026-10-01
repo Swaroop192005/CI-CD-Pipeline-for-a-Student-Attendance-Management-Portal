@@ -1,0 +1,52 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/e2e.sh
+# executed 2026-10-01 16:22:38 UTC on Linux 6.18.44-fc-v50
+
+######  END-TO-END: one commit to a provisioned, running node  ######
+
+== 1. GIT — the commit that started it ==
+   96cb196 feat(task-15): explain the approved-only rule on the dashboard
+
+== 2. JENKINS — pipeline build #12 ==
+   (Declarative: Checkout SCM)
+   (Checkout)
+   (Build)
+   (Test)
+   (UI quality gate (Selenium))
+   (Package)
+   (Deploy)
+   (Verify)
+   (Docker build)
+   (Publish image)
+   (Deploy container)
+   (Verify container)
+   (Declarative: Post Actions)
+
+== 3. QUALITY GATE — unit tests and Selenium journeys ==
+   [INFO] Tests run: 37, Failures: 0, Errors: 0, Skipped: 0
+   [INFO] Tests run: 37, Failures: 0, Errors: 0, Skipped: 0
+   [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.45 s -- in com.samp.attendance.selenium.CriticalJourneysIT
+   [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+
+== 4. DOCKER — versioned image published ==
+   Published localhost:5000/samp-attendance:1.0.12
+   registry tags: {"name":"samp-attendance","tags":["latest","1.0.11","1.0.10","1.0.12"]}
+
+== 5. TOMCAT — WAR deployed by the pipeline (:8082) ==
+   /attendance/actuator/health -> HTTP 200
+
+== 6. CONTAINER — deployed by the pipeline (:8081) ==
+samp-attendance-run localhost:5000/samp-attendance:1.0.12 Up 37 seconds (healthy)
+
+== 7. ANSIBLE — provision the node with the new release (:8083) ==
+   TASK [deploy : Report the deployment decision] *********************************
+   [0;32m    "msg": "samp-attendance-prod healthy at http://localhost:8083/actuator/health -> {\"status\":\"UP\",\"groups\":[\"liveness\",\"readiness\"]}"[0m
+   [0;32m    "msg": "Deployed release 1.0.12 is serving on port 8083 and reports healthy to both the application and Docker."[0m
+   PLAY RECAP *********************************************************************
+
+== 8. FINAL STATE — three environments, one artefact ==
+   Tomcat    :8082/attendance  -> {"status":"UP","groups":["liveness","readiness"]}
+   Container :8081             -> {"status":"UP","groups":["liveness","readiness"]}
+   Ansible   :8083             -> {"status":"UP","groups":["liveness","readiness"]}
+   release on the provisioned node: 1.0.12
+
+[exit code: 0]
