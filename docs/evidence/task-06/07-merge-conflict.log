@@ -1,0 +1,45 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/conflict.sh
+# executed 2026-10-01 14:59:22 UTC on Linux 6.18.44-fc-v50
+
+Integrating the base branch into the feature branch (CONTRIBUTING.md 1.2)
+
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+
+=== git status ===
+[31mUU[m README.md
+[32mA[m  docs/evidence/task-06/01-two-sessions-recorded.png
+[32mA[m  docs/evidence/task-06/02-dashboard.png
+[32mA[m  docs/evidence/task-06/03-approved-and-rejected.png
+[32mA[m  docs/evidence/task-06/04-search.png
+[32mA[m  docs/evidence/task-06/05-student-view.png
+[32mA[m  docs/evidence/task-06/06-search-empty-state.png
+[32mM[m  src/main/java/com/samp/attendance/repository/AttendanceRecordRepository.java
+[32mM[m  src/main/java/com/samp/attendance/service/AttendanceService.java
+[32mA[m  src/main/java/com/samp/attendance/service/CourseAttendance.java
+[32mA[m  src/main/java/com/samp/attendance/service/DashboardService.java
+[32mA[m  src/main/java/com/samp/attendance/service/WorkflowService.java
+[32mM[m  src/main/java/com/samp/attendance/web/AttendanceController.java
+[32mA[m  src/main/java/com/samp/attendance/web/DashboardController.java
+[32mA[m  src/main/java/com/samp/attendance/web/StudentController.java
+[32mM[m  src/main/resources/static/css/app.css
+[32mM[m  src/main/resources/templates/attendance/list.html
+[32mA[m  src/main/resources/templates/attendance/search.html
+[32mA[m  src/main/resources/templates/dashboard.html
+[32mM[m  src/main/resources/templates/fragments/layout.html
+[32mA[m  src/main/resources/templates/my-attendance.html
+[32mA[m  src/test/java/com/samp/attendance/DashboardAndSearchTest.java
+[32mA[m  src/test/java/com/samp/attendance/WorkflowServiceTest.java
+[31m??[m docs/evidence/task-06/07-merge-conflict.log
+
+=== the conflict in README.md ===
+<<<<<<< HEAD
+Task 6 of 15 complete — master data screens added for courses and students,
+completing the administrative side of the MVP.
+=======
+Task 6 of 15 complete — the MVP is functionally complete: capture, search, the
+role-based approval workflow and the summary dashboard all work end to end.
+>>>>>>> origin/claude/determined-goldberg-ml3brm
+
+[exit code: 0]
