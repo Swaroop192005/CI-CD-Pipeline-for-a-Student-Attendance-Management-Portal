@@ -35,8 +35,16 @@ services:
       GIT_SSL_CAINFO: "/etc/ssl/certs/agent-proxy-ca.crt"
       SAMP_REPO_URL: "${SAMP_REPO_URL:-https://github.com/Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal.git}"
       SAMP_REPO_BRANCH: "${SAMP_REPO_BRANCH:-*/claude/determined-goldberg-ml3brm}"
+    # Joining the host's docker group lets the jenkins user reach the socket
+    # without loosening its permissions for every process on the machine.
+    group_add:
+      - "996"
     volumes:
       - jenkins_home:/var/jenkins_home
+      # Docker CLI and socket, so the pipeline can build, push and run containers.
+      # The CLI is mounted rather than installed because apt is blocked here.
+      - /usr/bin/docker:/usr/bin/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock
       - ./init.groovy.d:/usr/share/jenkins/ref/init.groovy.d:ro
       # Toolchain mounted from the host: the image has no JDK 17 or Maven, and
       # package installation is blocked by the same network policy.

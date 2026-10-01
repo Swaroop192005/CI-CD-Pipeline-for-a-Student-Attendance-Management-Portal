@@ -10,6 +10,10 @@ pipeline {
                description: 'Tomcat context path. The WAR is deployed as <context>.war, so the app serves at /<context>.')
         string(name: 'ATTENDANCE_THRESHOLD', defaultValue: '75',
                description: 'Minimum attendance percentage below which a student is flagged. Changing this needs no rebuild.')
+        string(name: 'REGISTRY', defaultValue: 'localhost:5000',
+               description: 'Image registry. Defaults to the local registry; set to docker.io/<user> to publish to Docker Hub.')
+        string(name: 'CONTAINER_PORT', defaultValue: '8081',
+               description: 'Host port the deployed container is published on.')
         string(name: 'TOMCAT_PORT', defaultValue: '8082',
                description: 'Port of the Tomcat the WAR is deployed to, used by the verification stage.')
         booleanParam(name: 'SKIP_DEPLOY', defaultValue: false,
@@ -31,6 +35,10 @@ pipeline {
         WEBAPPS_DIR = '/deploy/webapps'
         // The browser runs in the samp-selenium container; see jenkins/docker-compose.yml.
         SELENIUM_URL = 'http://localhost:4444/wd/hub'
+        IMAGE_NAME   = 'samp-attendance'
+        // Every image carries the build number, so a running container can always
+        // be traced back to the exact pipeline run that produced it.
+        IMAGE_VERSION = "1.0.${env.BUILD_NUMBER}"
     }
 
     stages {
@@ -135,6 +143,78 @@ pipeline {
                         sleep 1
                     done
                     echo "ERROR: deployed application did not become healthy within 120s"
+                    exit 1
+                '''
+            }
+        }
+
+
+        stage('Docker build') {
+            steps {
+                script {
+                    env.GIT_SHA = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+                }
+                sh '''
+                    set -e
+                    docker build \
+                        --build-arg APP_VERSION=${IMAGE_VERSION} \
+                        --build-arg BUILD_NUMBER=${BUILD_NUMBER} \
+                        --build-arg GIT_COMMIT=${GIT_SHA} \
+                        -t ${IMAGE_NAME}:${IMAGE_VERSION} \
+                        -t ${IMAGE_NAME}:latest .
+                    docker images ${IMAGE_NAME} --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}"
+                '''
+            }
+        }
+
+        stage('Publish image') {
+            steps {
+                // Tagged with the build number AND latest (AC-22.2): the version
+                // tag is what makes a rollback possible, because 'latest' cannot
+                // name the release you want to go back to.
+                sh '''
+                    set -e
+                    docker tag ${IMAGE_NAME}:${IMAGE_VERSION} ${REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
+                    docker tag ${IMAGE_NAME}:${IMAGE_VERSION} ${REGISTRY}/${IMAGE_NAME}:latest
+                    docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
+                    docker push ${REGISTRY}/${IMAGE_NAME}:latest
+                    echo "Published ${REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}"
+                '''
+            }
+        }
+
+        stage('Deploy container') {
+            steps {
+                // A fresh container from the image just published, not a restart
+                // of the old one, so what runs is exactly what was tested.
+                sh '''
+                    set -e
+                    docker rm -f ${IMAGE_NAME}-run >/dev/null 2>&1 || true
+                    docker run -d --name ${IMAGE_NAME}-run \
+                        -p ${CONTAINER_PORT}:8080 \
+                        -e ATTENDANCE_THRESHOLD=${ATTENDANCE_THRESHOLD} \
+                        --restart unless-stopped \
+                        ${REGISTRY}/${IMAGE_NAME}:${IMAGE_VERSION}
+                    docker ps --filter name=${IMAGE_NAME}-run --format "  {{.Names}} {{.Image}} {{.Status}} {{.Ports}}"
+                '''
+            }
+        }
+
+        stage('Verify container') {
+            steps {
+                sh '''
+                    set -e
+                    for i in $(seq 1 90); do
+                        state=$(docker inspect --format "{{.State.Health.Status}}" ${IMAGE_NAME}-run 2>/dev/null || echo starting)
+                        if [ "$state" = "healthy" ]; then
+                            echo "Container healthy after ${i}s"
+                            curl -s --noproxy localhost "http://localhost:${CONTAINER_PORT}/actuator/health"; echo
+                            exit 0
+                        fi
+                        sleep 1
+                    done
+                    echo "ERROR: container did not become healthy"
+                    docker logs --tail 40 ${IMAGE_NAME}-run
                     exit 1
                 '''
             }
