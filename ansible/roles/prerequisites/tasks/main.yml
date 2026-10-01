@@ -1,0 +1,70 @@
+---
+# Server prerequisites: commands, users, directories and the ports the service needs.
+
+- name: Verify required commands are present
+  ansible.builtin.command: "which {{ item }}"
+  loop: "{{ required_commands }}"
+  register: command_check
+  changed_when: false          # a check never "changes" anything
+  failed_when: command_check.rc != 0
+
+- name: Verify the Docker daemon is reachable
+  ansible.builtin.command: docker info --format '{{ "{{" }}.ServerVersion{{ "}}" }}'
+  register: docker_info
+  changed_when: false
+  failed_when: docker_info.rc != 0
+
+- name: Report the Docker version in use
+  ansible.builtin.debug:
+    msg: "Docker daemon {{ docker_info.stdout }} reachable on {{ inventory_hostname }}"
+
+- name: Ensure the service group exists
+  ansible.builtin.group:
+    name: "{{ app_group }}"
+    gid: "{{ app_uid }}"
+    state: present
+
+- name: Ensure the service user exists
+  # A dedicated unprivileged account owns the application's data; nothing here
+  # should ever run as root.
+  ansible.builtin.user:
+    name: "{{ app_user }}"
+    uid: "{{ app_uid }}"
+    group: "{{ app_group }}"
+    home: "{{ app_base_dir }}"
+    create_home: false
+    shell: /usr/sbin/nologin
+    system: true
+    state: present
+
+- name: Ensure application directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0755"
+  loop:
+    - "{{ app_base_dir }}"
+    - "{{ app_data_dir }}"
+    - "{{ app_log_dir }}"
+
+- name: Ensure the release marker file exists
+  # Records which version is deployed, so a rollback knows what to go back to.
+  ansible.builtin.file:
+    path: "{{ app_release_file }}"
+    state: touch
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: "0644"
+    modification_time: preserve
+    access_time: preserve        # without these, touch reports changed on every run
+
+- name: Check whether the service port is already in use by something else
+  ansible.builtin.shell: |
+    set -o pipefail
+    if command -v ss >/dev/null 2>&1; then ss -ltn "sport = :{{ host_port }}" | tail -n +2; fi
+  args:
+    executable: /bin/bash
+  register: port_check
+  changed_when: false

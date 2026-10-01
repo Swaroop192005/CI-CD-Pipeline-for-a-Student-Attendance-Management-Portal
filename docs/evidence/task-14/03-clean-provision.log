@@ -1,0 +1,46 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/clean.sh
+# executed 2026-10-01 16:18:32 UTC on Linux 6.18.44-fc-v50
+
+=== Tear the node down to a clean state ===
+  container removed
+  /opt/samp removed
+  service account removed
+  verifying clean:
+    ls: cannot access '/opt/samp': No such file or directory
+    id: 'samp': no such user
+    no container present
+
+=== Provision the clean node from scratch ===
+  [0;33mchanged: [portal-node] => (item=/opt/samp/data)[0m
+  [0;33mchanged: [portal-node] => (item=/opt/samp/logs)[0m
+  TASK [prerequisites : Ensure the release marker file exists] *******************
+  [0;33mchanged: [portal-node][0m
+  TASK [prerequisites : Check whether the service port is already in use by something else] ***
+  TASK [deploy : Resolve the image reference to deploy] **************************
+  TASK [deploy : Pull the image] *************************************************
+  TASK [deploy : Inspect the running container] **********************************
+  TASK [deploy : Record what is currently deployed] ******************************
+  TASK [deploy : Report the deployment decision] *********************************
+  [0;32mok: [portal-node] => {[0m
+  TASK [deploy : Start the application container] ********************************
+  [0;33mchanged: [portal-node][0m
+  TASK [deploy : Record the deployed release] ************************************
+  [0;33mchanged: [portal-node][0m
+  TASK [verify : Wait for the application to report healthy] *********************
+  TASK [verify : Report the health result] ***************************************
+  [0;32mok: [portal-node] => {[0m
+  [0;32m    "msg": "samp-attendance-prod healthy at http://localhost:8083/actuator/health -> {\"status\":\"UP\",\"groups\":[\"liveness\",\"readiness\"]}"[0m
+  TASK [verify : Confirm the container reports healthy to Docker as well] ********
+  TASK [verify : Report the deployed release] ************************************
+  TASK [verify : Summary] ********************************************************
+  [0;32mok: [portal-node] => {[0m
+  PLAY RECAP *********************************************************************
+
+=== Result on the freshly provisioned node ===
+  uid=1001(samp) gid=1001(samp) groups=1001(samp)
+  drwxr-xr-x 4 samp samp 4096 Oct  1 16:18 /opt/samp
+  drwxr-xr-x 2 samp samp 4096 Oct  1 16:18 /opt/samp/data
+samp-attendance-prod localhost:5000/samp-attendance:1.0.11 Up 12 seconds (healthy)
+  health: {"status":"UP","groups":["liveness","readiness"]}
+
+[exit code: 0]

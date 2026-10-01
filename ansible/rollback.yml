@@ -1,0 +1,53 @@
+---
+# Roll back to a previous release (AC-24.4).
+#
+#   ansible-playbook rollback.yml -e rollback_to=1.0.10
+#
+# Rollback is deliberately the SAME deploy path with a different version rather
+# than a special-cased recovery procedure. A recovery path that is only exercised
+# during an incident is a path that does not work during an incident.
+- name: Roll back the portal to a previous release
+  hosts: portal
+  gather_facts: false
+  become: false
+
+  pre_tasks:
+    - name: Require a target release
+      ansible.builtin.assert:
+        that:
+          - rollback_to is defined
+          - rollback_to | length > 0
+        fail_msg: "Specify the release to roll back to, e.g. -e rollback_to=1.0.10"
+
+    - name: Read the release currently deployed
+      ansible.builtin.command: "cat {{ app_release_file }}"
+      register: previous_release
+      changed_when: false
+      failed_when: false
+
+    - name: Confirm the rollback target image exists in the registry
+      # Checked before anything is torn down: discovering the target is missing
+      # after removing the running container turns a rollback into an outage.
+      ansible.builtin.uri:
+        url: "http://{{ registry }}/v2/{{ app_name }}/manifests/{{ rollback_to }}"
+        headers:
+          # BuildKit publishes OCI manifests, so the OCI media types must be
+          # accepted too. Sending only the Docker v2 type makes the registry
+          # answer 404 MANIFEST_UNKNOWN for an image that is actually present.
+          Accept: "application/vnd.oci.image.manifest.v1+json,application/vnd.oci.image.index.v1+json,application/vnd.docker.distribution.manifest.v2+json,application/vnd.docker.distribution.manifest.list.v2+json"
+        status_code: 200
+      register: manifest_check
+
+    - name: Announce the rollback
+      ansible.builtin.debug:
+        msg: >-
+          Rolling back from {{ previous_release.stdout | default('unknown', true) | trim }}
+          to {{ rollback_to }}
+
+    - name: Select the rollback version for the deploy role
+      ansible.builtin.set_fact:
+        app_version: "{{ rollback_to }}"
+
+  roles:
+    - role: deploy
+    - role: verify

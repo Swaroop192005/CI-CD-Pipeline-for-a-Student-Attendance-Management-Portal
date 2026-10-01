@@ -1,0 +1,43 @@
+---
+# Post-deployment health verification (AC-24.3).
+#
+# A deployment that started but does not answer is not a deployment. The play
+# fails here rather than reporting success for a broken release.
+
+- name: Wait for the application to report healthy
+  ansible.builtin.uri:
+    url: "{{ health_url }}"
+    return_content: true
+    status_code: 200
+  register: health
+  retries: "{{ health_retries }}"
+  delay: "{{ health_delay }}"
+  until: health.status is defined and health.status == 200 and '"status":"UP"' in health.content
+  changed_when: false
+
+- name: Report the health result
+  ansible.builtin.debug:
+    msg: "{{ container_name }} healthy at {{ health_url }} -> {{ health.content }}"
+
+- name: Confirm the container reports healthy to Docker as well
+  # Retried, not checked once. The application answers /actuator/health as soon as
+  # it is up, but Docker only records 'healthy' after its HEALTHCHECK interval has
+  # elapsed past the start period, so an immediate check races the daemon and sees
+  # 'starting'.
+  ansible.builtin.command: "docker inspect --format '{{ '{{' }}.State.Health.Status{{ '}}' }}' {{ container_name }}"
+  register: docker_health
+  retries: "{{ health_retries }}"
+  delay: "{{ health_delay }}"
+  until: docker_health.stdout | trim == 'healthy'
+  changed_when: false
+
+- name: Report the deployed release
+  ansible.builtin.command: "cat {{ app_release_file }}"
+  register: deployed_release
+  changed_when: false
+
+- name: Summary
+  ansible.builtin.debug:
+    msg: >-
+      Deployed release {{ deployed_release.stdout | trim }} is serving on port {{ host_port }}
+      and reports healthy to both the application and Docker.

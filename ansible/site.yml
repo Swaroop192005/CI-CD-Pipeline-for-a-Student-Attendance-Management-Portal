@@ -1,0 +1,17 @@
+---
+# Provision the portal node and deploy the application.
+#
+#   ansible-playbook site.yml                      # deploy :latest
+#   ansible-playbook site.yml -e app_version=1.0.10  # deploy a specific release
+- name: Provision and deploy the Student Attendance Management Portal
+  hosts: portal
+  gather_facts: true
+  become: false          # the tasks that need privilege request it individually
+
+  roles:
+    - role: prerequisites
+      tags: [prereq, provision]
+    - role: deploy
+      tags: [deploy]
+    - role: verify
+      tags: [verify, health]

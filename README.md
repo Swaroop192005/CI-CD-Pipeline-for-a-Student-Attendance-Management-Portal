@@ -168,6 +168,8 @@ ATTENDANCE_THRESHOLD=80 SERVER_PORT=9090 scripts/app-control.sh start --port 909
 | 10 | [Continuous Testing in Jenkins](docs/10-continuous-testing.md) |
 | 11 | [Docker Image and Container Lifecycle](docs/11-docker.md) |
 | 12 | [Jenkins-Docker Continuous Deployment](docs/12-jenkins-docker-cd.md) |
+| 13 | [Configuration Management Script](docs/13-configuration-management.md) |
+| 14 | [Automated Provisioning and Reliability Validation](docs/14-provisioning-and-reliability.md) |
 | — | [Contributing: branch policy, commits, review](CONTRIBUTING.md) |
 | — | [Evidence pack: rules and index](docs/evidence/README.md) |
 

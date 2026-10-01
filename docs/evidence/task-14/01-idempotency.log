@@ -1,0 +1,85 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/ans2.sh
+# executed 2026-10-01 16:14:11 UTC on Linux 6.18.44-fc-v50
+
+Second run of the SAME playbook against the already-provisioned node.
+Idempotency means this must report changed=0.
+
+
+PLAY [Provision and deploy the Student Attendance Management Portal] *******************************************************************************************
+
+TASK [Gathering Facts] *****************************************************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [prerequisites : Verify required commands are present] ****************************************************************************************************
+[0;32mok: [portal-node] => (item=docker)[0m
+[0;32mok: [portal-node] => (item=curl)[0m
+
+TASK [prerequisites : Verify the Docker daemon is reachable] ***************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [prerequisites : Report the Docker version in use] ********************************************************************************************************
+[0;32mok: [portal-node] => {[0m
+[0;32m    "msg": "Docker daemon 29.6.2 reachable on portal-node"[0m
+[0;32m}[0m
+
+TASK [prerequisites : Ensure the service group exists] *********************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [prerequisites : Ensure the service user exists] **********************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [prerequisites : Ensure application directories exist] ****************************************************************************************************
+[0;32mok: [portal-node] => (item=/opt/samp)[0m
+[0;32mok: [portal-node] => (item=/opt/samp/data)[0m
+[0;32mok: [portal-node] => (item=/opt/samp/logs)[0m
+
+TASK [prerequisites : Ensure the release marker file exists] ***************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [prerequisites : Check whether the service port is already in use by something else] **********************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [deploy : Resolve the image reference to deploy] **********************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [deploy : Pull the image] *********************************************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [deploy : Inspect the running container] ******************************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [deploy : Record what is currently deployed] **************************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [deploy : Report the deployment decision] *****************************************************************************************************************
+[0;32mok: [portal-node] => {[0m
+[0;32m    "msg": "running=localhost:5000/samp-attendance:1.0.10 desired=localhost:5000/samp-attendance:1.0.10 action=none (already correct)"[0m
+[0;32m}[0m
+
+TASK [deploy : Record the deployed release] ********************************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [verify : Wait for the application to report healthy] *****************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [verify : Report the health result] ***********************************************************************************************************************
+[0;32mok: [portal-node] => {[0m
+[0;32m    "msg": "samp-attendance-prod healthy at http://localhost:8083/actuator/health -> {\"status\":\"UP\",\"groups\":[\"liveness\",\"readiness\"]}"[0m
+[0;32m}[0m
+
+TASK [verify : Confirm the container reports healthy to Docker as well] ****************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [verify : Report the deployed release] ********************************************************************************************************************
+[0;32mok: [portal-node][0m
+
+TASK [verify : Summary] ****************************************************************************************************************************************
+[0;32mok: [portal-node] => {[0m
+[0;32m    "msg": "Deployed release 1.0.10 is serving on port 8083 and reports healthy to both the application and Docker."[0m
+[0;32m}[0m
+
+PLAY RECAP *****************************************************************************************************************************************************
+[0;32mportal-node[0m                : [0;32mok=20  [0m changed=0    unreachable=0    failed=0    [0;36mskipped=2   [0m rescued=0    ignored=0   
+
+
+[exit code: 0]

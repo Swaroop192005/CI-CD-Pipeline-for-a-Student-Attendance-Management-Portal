@@ -65,8 +65,8 @@ successes, and every terminal image ships with the log it was rendered from.
 | 10 | Continuous Testing in Jenkins | ✅ Done | `docs/10-continuous-testing.md` | `evidence/task-10/` |
 | 11 | Docker Image and Container Lifecycle | ✅ Done | `Dockerfile`, `docs/11-docker.md` | `evidence/task-11/` |
 | 12 | Jenkins-Docker Continuous Deployment | ✅ Done | `Jenkinsfile`, `docs/12-jenkins-docker-cd.md` | `evidence/task-12/` |
-| 13 | Configuration Management Script | ⬜ Pending | `ansible/` | `evidence/task-13/` |
-| 14 | Automated Provisioning and Reliability Validation | ⬜ Pending | `docs/14-provisioning.md` | `evidence/task-14/` |
+| 13 | Configuration Management Script | ✅ Done | `ansible/`, `docs/13-configuration-management.md` | `evidence/task-13/` |
+| 14 | Automated Provisioning and Reliability Validation | ✅ Done | `docs/14-provisioning-and-reliability.md` | `evidence/task-14/` |
 | 15 | Final End-to-End Release, Documentation and Viva | ⬜ Pending | `docs/15-final-report.md` | `evidence/task-15/` |
 
 Legend: ⬜ Pending · 🟨 In progress · ✅ Done

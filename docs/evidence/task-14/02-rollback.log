@@ -1,0 +1,76 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/rollback.sh
+# executed 2026-10-01 16:17:44 UTC on Linux 6.18.44-fc-v50
+
+=== 1. Upgrade the node to the new release 1.0.11 ===
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node] => (item=docker)[0m
+  [0;32mok: [portal-node] => (item=curl)[0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node] => {[0m
+  [0;32m    "msg": "Docker daemon 29.6.2 reachable on portal-node"[0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node] => (item=/opt/samp)[0m
+  [0;32mok: [portal-node] => (item=/opt/samp/data)[0m
+  [0;32mok: [portal-node] => (item=/opt/samp/logs)[0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  TASK [deploy : Report the deployment decision] *********************************
+  [0;32mok: [portal-node] => {[0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node] => {[0m
+  [0;32m    "msg": "samp-attendance-prod healthy at http://localhost:8083/actuator/health -> {\"status\":\"UP\",\"groups\":[\"liveness\",\"readiness\"]}"[0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node] => {[0m
+  PLAY RECAP *********************************************************************
+  [0;32mportal-node[0m                : [0;32mok=20  [0m changed=0    unreachable=0    failed=0    [0;36mskipped=2   [0m rescued=0    ignored=0   
+
+  release now deployed: 1.0.11
+  image now running   : localhost:5000/samp-attendance:1.0.11
+
+=== 2. ROLL BACK to the previous stable release 1.0.10 ===
+  [0;32mok: [portal-node] => {[0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node] => {[0m
+  [0;32m    "msg": "Rolling back from 1.0.11 to 1.0.10"[0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  TASK [deploy : Report the deployment decision] *********************************
+  [0;32mok: [portal-node] => {[0m
+  [0;33mchanged: [portal-node][0m
+  TASK [deploy : Start the application container] ********************************
+  [0;33mchanged: [portal-node][0m
+  [0;33mchanged: [portal-node][0m
+  [1;30mFAILED - RETRYING: [portal-node]: Wait for the application to report healthy (30 retries left).[0m
+  [1;30mFAILED - RETRYING: [portal-node]: Wait for the application to report healthy (29 retries left).[0m
+  [1;30mFAILED - RETRYING: [portal-node]: Wait for the application to report healthy (28 retries left).[0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node] => {[0m
+  [0;32m    "msg": "samp-attendance-prod healthy at http://localhost:8083/actuator/health -> {\"status\":\"UP\",\"groups\":[\"liveness\",\"readiness\"]}"[0m
+  [1;30mFAILED - RETRYING: [portal-node]: Confirm the container reports healthy to Docker as well (30 retries left).[0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node][0m
+  [0;32mok: [portal-node] => {[0m
+  [0;32m    "msg": "Deployed release 1.0.10 is serving on port 8083 and reports healthy to both the application and Docker."[0m
+  PLAY RECAP *********************************************************************
+  [0;33mportal-node[0m                : [0;32mok=18  [0m [0;33mchanged=3   [0m unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+  release after rollback: 1.0.10
+  image after rollback  : localhost:5000/samp-attendance:1.0.10
+  rollback completed in : 16 seconds  (target: under 300s)
+
+=== 3. HEALTH after rollback ===
+  {"status":"UP","groups":["liveness","readiness"]}
+  docker health: healthy
+
+[exit code: 0]

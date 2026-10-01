@@ -1,0 +1,36 @@
+---
+# Everything the playbooks need to know about the target, in one place.
+
+# --- Identity -------------------------------------------------------------
+app_name: samp-attendance
+app_user: samp
+app_group: samp
+app_uid: 1001
+
+# --- Filesystem layout ----------------------------------------------------
+app_base_dir: /opt/samp
+app_data_dir: "{{ app_base_dir }}/data"
+app_log_dir: "{{ app_base_dir }}/logs"
+app_release_file: "{{ app_base_dir }}/current-release"
+
+# --- Image and registry ---------------------------------------------------
+registry: "localhost:5000"
+image_repo: "{{ registry }}/{{ app_name }}"
+# Overridden per run: -e app_version=1.0.10
+app_version: "latest"
+
+# --- Runtime --------------------------------------------------------------
+container_name: "{{ app_name }}-prod"
+host_port: 8083
+container_port: 8080
+attendance_threshold: 75
+
+# --- Health ---------------------------------------------------------------
+health_url: "http://localhost:{{ host_port }}/actuator/health"
+health_retries: 30
+health_delay: 2
+
+# --- Prerequisites --------------------------------------------------------
+required_commands:
+  - docker
+  - curl
