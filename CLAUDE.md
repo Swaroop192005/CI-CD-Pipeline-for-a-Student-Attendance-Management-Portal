@@ -30,6 +30,9 @@ cd ansible && ansible-playbook site.yml -e app_version=latest
 
 Demo logins: `faculty1/faculty123` · `admin/admin123` · `22cs001/student123`
 
+**Attendance data persists** — H2 is a file at `data/sampdb.mv.db` and survives
+restarts. `scripts/demo-up.sh --fresh` is the only thing that wipes it.
+
 Ports: 8080 dev · 8081 container · 8082 Tomcat · 8083 Ansible node · 8090 Jenkins ·
 5000 registry · 4444 Selenium Grid.
 

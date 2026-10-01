@@ -50,13 +50,26 @@ case "$CMD" in
       echo "[app-control] already running (pid $(cat "$PID_FILE"))"; exit 0
     fi
     cd "$ROOT"
+    # setsid, not just nohup. nohup only ignores SIGHUP for the process it starts;
+    # Maven forks a child JVM that is still in the caller's session, so closing the
+    # terminal takes the application down with it. setsid detaches it into its own
+    # session so it genuinely keeps running.
+    detach() { if command -v setsid >/dev/null 2>&1; then setsid "$@"; else nohup "$@"; fi; }
+
     if [ "$MODE" = "war" ]; then
       [ -f target/attendance-portal.war ] || { echo "[app-control] target/attendance-portal.war missing; run mvn package"; exit 1; }
-      SERVER_PORT="$PORT" nohup java -jar target/attendance-portal.war > "$LOG_FILE" 2>&1 &
+      SERVER_PORT="$PORT" detach java -jar target/attendance-portal.war > "$LOG_FILE" 2>&1 &
     else
-      args=(-B spring-boot:run "-Dspring-boot.run.jvmArguments=-DSERVER_PORT=$PORT")
-      [ -n "$PROFILE" ] && args+=("-Dspring-boot.run.profiles=$PROFILE")
-      SERVER_PORT="$PORT" nohup mvn "${args[@]}" > "$LOG_FILE" 2>&1 &
+      # Run the packaged WAR rather than spring-boot:run when one exists: it starts
+      # faster and, more importantly, is a single process rather than Maven plus a
+      # forked JVM, so stopping and detaching it are both reliable.
+      if [ -f target/attendance-portal.war ]; then
+        SERVER_PORT="$PORT" detach java -jar target/attendance-portal.war > "$LOG_FILE" 2>&1 &
+      else
+        args=(-B spring-boot:run "-Dspring-boot.run.jvmArguments=-DSERVER_PORT=$PORT")
+        [ -n "$PROFILE" ] && args+=("-Dspring-boot.run.profiles=$PROFILE")
+        SERVER_PORT="$PORT" detach mvn "${args[@]}" > "$LOG_FILE" 2>&1 &
+      fi
     fi
     echo $! > "$PID_FILE"
     echo "[app-control] started pid $(cat "$PID_FILE") mode=$MODE port=$PORT log=$LOG_FILE"
