@@ -1,0 +1,42 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/ghe.sh
+# executed 2026-10-01 17:51:06 UTC on Linux 6.18.44-fc-v50
+
+REPOSITORY STATE — read live from the GitHub REST API
+==============================================================================
+  full_name            Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal
+  visibility           public
+  default_branch       claude/determined-goldberg-ml3brm
+  open_issues_count    1
+  pushed_at            2026-10-01T17:49:06Z
+
+RELEASE TAG
+------------------------------------------------------------------------------
+  v1.0.0     -> c0948c6
+
+PULL REQUESTS
+------------------------------------------------------------------------------
+  #7  MERGED  feature/US-06-record-attendance
+       feat(task-05): attendance capture and paged records list (US-01, US-06
+       review: COMMENTED by Swaroop192005
+  #8  MERGED  feature/US-12-approval-workflow
+       feat(task-06): approval workflow, search and summary dashboard (US-09 
+  #9  MERGED  feature/US-04-admin-master-data
+       feat(task-06): admin master-data screens for courses and students (US-
+
+ISSUES
+------------------------------------------------------------------------------
+  #1  CLOSED  [US] US-06 — Record attendance for a course session
+  #2  CLOSED  [US] US-01 — Role-based login
+  #3  CLOSED  [US] US-12/US-13 — Role-based approval: only ADMIN may approve
+  #4  CLOSED  [US] US-09 — Search and filter attendance records
+  #5  CLOSED  [US] US-15 — Summary dashboard with below-threshold highlighti
+  #6  OPEN    [OPS] US-21 — Selenium quality gate must block deployment on t
+
+BRANCHES
+------------------------------------------------------------------------------
+  claude/determined-goldberg-ml3brm
+  feature/US-04-admin-master-data
+  feature/US-06-record-attendance
+  feature/US-12-approval-workflow
+
+[exit code: 0]

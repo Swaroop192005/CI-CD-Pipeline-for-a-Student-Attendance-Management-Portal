@@ -236,6 +236,31 @@ point P4, the silent edit, reappearing inside the very system built to eliminate
 
 ---
 
+## 8a. Reproducing this from scratch
+
+The whole stack rebuilds with one command, which was verified by **tearing
+everything down and bringing it back**:
+
+```bash
+scripts/demo-up.sh --full      # prerequisites, build, 37 tests, app, Jenkins, Grid, registry, Tomcat
+scripts/jenkins-build.sh samp-pipeline
+cd ansible && ansible-playbook site.yml -e app_version=latest
+scripts/demo-up.sh --down      # stop everything
+```
+
+![One-command rebuild](evidence/task-15/03-one-command-rebuild.png)
+
+After the rebuild, pipeline **build #13** ran green on the fresh stack: 37 unit
+tests, 6 Selenium journeys, image `1.0.13` published, container healthy in 11 s.
+
+Writing the script surfaced two defects in itself, both found only by running it:
+`java -version` prints a `Picked up JAVA_TOOL_OPTIONS:` banner before the version
+on some JDK setups, so `head -1` parsed the wrong line and the prerequisite check
+rejected a perfectly good JDK 21. The check now filters that banner and handles
+both `1.8`-style and modern version strings.
+
+---
+
 ## 9. Evidence pack
 
 Every claim in these documents is backed by a committed artefact in

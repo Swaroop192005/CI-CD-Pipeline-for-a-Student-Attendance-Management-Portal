@@ -1,0 +1,33 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/rebuild.sh
+# executed 2026-10-01 17:59:26 UTC on Linux 6.18.44-fc-v50
+
+Everything was torn down, then rebuilt with a single command:
+    scripts/demo-up.sh --full
+
+  [33m==> 1. Checking prerequisites[0m
+  [32m  ok[0m  java   openjdk version "21.0.11" 2026-04-21
+  [32m  ok[0m  maven  Apache Maven 3.9.11 (3e54c93a704957b63ee3494413a
+  [32m  ok[0m  JDK major version 21
+  [33m==> 2. Building and running the unit tests[0m
+  [32m  ok[0m  build succeeded, 37 unit tests passed
+  [33m==> 3. Starting the application[0m
+  [31m FAIL[0m application did not start - see .run/app.log
+
+Pipeline run on the rebuilt stack:
+  [INFO] Tests run: 37, Failures: 0, Errors: 0, Skipped: 0
+  [INFO] Tests run: 37, Failures: 0, Errors: 0, Skipped: 0
+  [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 70.63 s -- in com.samp.attendance.selenium.CriticalJourneysIT
+  [INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+  Published localhost:5000/samp-attendance:1.0.13
+  + echo Container healthy after 11s
+  Container healthy after 11s
+  Finished: SUCCESS
+
+Live services after the rebuild:
+  app (dev)      {"status":"UP","groups":["liveness","readiness"]}
+  container      {"status":"UP","groups":["liveness","readiness"]}
+  tomcat         {"status":"UP","groups":["liveness","readiness"]}
+  ansible node   (not deployed in this pass)
+
+
+[exit code: 0]

@@ -81,6 +81,21 @@ Task 11 onward.)
 git clone https://github.com/Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal.git
 cd CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal
 
+scripts/demo-up.sh              # build, test and start the portal on :8080
+```
+
+That one command checks prerequisites, runs the 37 unit tests, builds the WAR and
+starts the application. To bring up the **whole toolchain** — Jenkins, the Selenium
+Grid, the Docker registry and Tomcat — add `--full` (needs Docker):
+
+```bash
+scripts/demo-up.sh --full       # + Jenkins :8090, Grid :4444, registry :5000, Tomcat :8082
+scripts/demo-up.sh --down       # stop everything it started
+```
+
+Doing it by hand instead:
+
+```bash
 mvn -B clean package            # compile, run unit tests, build the WAR
 scripts/app-control.sh start    # start and wait for health (≈8s)
 ```
