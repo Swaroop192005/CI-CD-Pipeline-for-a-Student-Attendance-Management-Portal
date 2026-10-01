@@ -3,6 +3,7 @@
 #
 #   scripts/demo-up.sh           # app + tests (no Docker needed)
 #   scripts/demo-up.sh --full    # also Jenkins, registry, Selenium Grid, Tomcat
+#   scripts/demo-up.sh --fresh   # wipe the database first and re-seed demo data
 #   scripts/demo-up.sh --down    # stop everything this script started
 #
 # Requires: JDK 17+, Maven 3.9+.  --full additionally requires Docker.
@@ -16,7 +17,13 @@ bad(){ echo "${RED} FAIL${OFF} $*"; }
 note(){ echo "${DIM}      $*${OFF}"; }
 step(){ echo; echo "${YEL}==> $*${OFF}"; }
 
-MODE="${1:-basic}"
+MODE="basic"; FRESH="no"
+for a in "$@"; do
+  case "$a" in
+    --fresh) FRESH="yes" ;;
+    --full|--down) MODE="$a" ;;
+  esac
+done
 
 if [ "$MODE" = "--down" ]; then
   step "Stopping everything"
@@ -76,7 +83,14 @@ if command -v lsof >/dev/null 2>&1 && lsof -ti:8080 >/dev/null 2>&1; then
   note "    lsof -ti:8080 | xargs kill -9"
   exit 1
 fi
-rm -rf data
+# The H2 database is a file, so attendance entered in a previous run survives a
+# restart. Wiping it is therefore opt-in (--fresh) rather than the default:
+# silently deleting a demo someone has just set up is a nasty surprise.
+if [ "${FRESH:-no}" = "yes" ]; then
+  rm -rf data && note "--fresh: previous attendance data deleted, demo accounts re-seeded"
+elif [ -f data/sampdb.mv.db ]; then
+  note "keeping existing data ($(du -h data/sampdb.mv.db | cut -f1)). Use --fresh to start clean."
+fi
 if scripts/app-control.sh start --port 8080 --timeout 120 | tail -1 | grep -q "UP after"; then
   ok "application healthy on http://localhost:8080"
   note "sign in: faculty1/faculty123 · admin/admin123 · 22cs001/student123"
@@ -93,6 +107,7 @@ if [ "$MODE" != "--full" ]; then
   echo
   echo "  Selenium journeys :  mvn -Pselenium verify"
   echo "  Everything else   :  scripts/demo-up.sh --full"
+  echo "  Start clean       :  scripts/demo-up.sh --fresh"
   echo "  Stop              :  scripts/demo-up.sh --down"
   exit 0
 fi
