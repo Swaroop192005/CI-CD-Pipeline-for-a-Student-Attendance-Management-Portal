@@ -49,13 +49,17 @@ public class DataSeeder {
                     new Seed("22CS007", "Arjun Menon"),
                     new Seed("22CS008", "Saanvi Iyer"));
 
-            for (Seed s : seeds) {
+            // Everyone takes CS301; only this many also take CS302, so that the
+            // dashboard in Task 6 has students with differing course counts.
+            final int alsoEnrolledInCs302 = 5;
+
+            for (int i = 0; i < seeds.size(); i++) {
+                Seed s = seeds.get(i);
                 AppUser login = users.save(new AppUser(
                         s.roll().toLowerCase(), encoder.encode("student123"), s.name(), Role.STUDENT));
                 Student student = students.save(new Student(s.roll(), s.name(), login));
                 enrolments.save(new Enrolment(student, cs301));
-                // Only the first five also take CS302, so the dashboard has varied data.
-                if (seeds.indexOf(s) < 5) {
+                if (i < alsoEnrolledInCs302) {
                     enrolments.save(new Enrolment(student, cs302));
                 }
             }

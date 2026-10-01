@@ -27,6 +27,7 @@ import java.util.Map;
 public class AttendanceController {
 
     private static final int PAGE_SIZE = 20; // AC-07.2
+    private static final String STATUS_FIELD_PREFIX = "status-";
 
     private final AttendanceService attendance;
 
@@ -90,19 +91,33 @@ public class AttendanceController {
     /**
      * Form fields are named {@code status-<studentId>}; everything else posted
      * (course, date, CSRF token) is ignored here.
+     *
+     * <p>A malformed {@code status-*} field is rejected rather than skipped.
+     * Skipping it would leave that student's attendance unrecorded while the
+     * confirmation still reported success — a silent data loss, which is the very
+     * problem this portal exists to remove. Such a field can only come from a
+     * broken or tampered form, so failing loudly is correct.
      */
     private Map<Long, AttendanceStatus> extractStatuses(Map<String, String> params) {
         Map<Long, AttendanceStatus> result = new HashMap<>();
         params.forEach((key, value) -> {
-            if (key.startsWith("status-")) {
-                try {
-                    result.put(Long.valueOf(key.substring("status-".length())),
-                               AttendanceStatus.valueOf(value));
-                } catch (IllegalArgumentException ignored) {
-                    // An unparseable field is skipped rather than failing the whole save.
-                }
+            if (!key.startsWith(STATUS_FIELD_PREFIX)) {
+                return;
+            }
+            String rawStudentId = key.substring(STATUS_FIELD_PREFIX.length());
+            try {
+                result.put(Long.valueOf(rawStudentId), AttendanceStatus.valueOf(value));
+            } catch (IllegalArgumentException e) {
+                throw new MalformedAttendanceFieldException(key, value, e);
             }
         });
         return result;
+    }
+
+    /** Thrown when a posted {@code status-*} field cannot be interpreted. */
+    static class MalformedAttendanceFieldException extends RuntimeException {
+        MalformedAttendanceFieldException(String field, String value, Throwable cause) {
+            super("Malformed attendance field '" + field + "' with value '" + value + "'", cause);
+        }
     }
 }
