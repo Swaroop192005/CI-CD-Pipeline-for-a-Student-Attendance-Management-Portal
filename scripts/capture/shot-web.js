@@ -39,13 +39,30 @@ const timeout  = parseInt(arg('timeout', '30000'), 10);
 // Sites with long-polling or websockets (GitHub, Jenkins) never reach
 // 'networkidle'; --wait-until load/domcontentloaded handles those.
 const waitUntil = arg('wait-until', 'networkidle');
+// Hosts to abort rather than wait for. A blocked host whose connection is held
+// open rather than refused will stall a page load indefinitely, so telemetry and
+// other non-visual endpoints are cut off at the request layer.
+const blockList = (arg('block', '') || '').split(',').map(x => x.trim()).filter(Boolean);
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 (async () => {
   fs.mkdirSync(path.dirname(out), { recursive: true });
-  const browser = await chromium.launch({ args: ['--no-sandbox', '--disable-dev-shm-usage'] });
+  // --ignore-certificate-errors is required, not merely belt-and-braces: the
+  // outbound proxy terminates TLS with its own CA, which Chromium does not trust.
+  // Context-level ignoreHTTPSErrors alone does not cover the main-frame
+  // navigation, which fails with ERR_CERT_AUTHORITY_INVALID.
+  const browser = await chromium.launch({
+    args: ['--no-sandbox', '--disable-dev-shm-usage', '--ignore-certificate-errors'] });
   const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 2, ignoreHTTPSErrors: true });
   const page = await ctx.newPage();
+
+  if (blockList.length) {
+    await page.route('**/*', (route) => {
+      const url = route.request().url();
+      if (blockList.some(h => url.includes(h))) return route.abort();
+      return route.continue();
+    });
+  }
 
   const resp = await page.goto(url, { waitUntil, timeout });
   if (resp && resp.status() >= 400) throw new Error(`${url} returned HTTP ${resp.status()}`);

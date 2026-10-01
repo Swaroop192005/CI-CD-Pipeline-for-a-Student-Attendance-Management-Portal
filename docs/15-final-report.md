@@ -155,7 +155,9 @@ Every entry below was hit and solved during this project.
 |---|---|---|
 | `updates.jenkins.io`, all Jenkins mirrors | Plugins can't be installed | Copy the plugin set from `jenkinsci/blueocean` into the Debian JDK-17 image |
 | `deb.debian.org` (403) | No `apt` in containers | Mount binaries from the host; run the browser in its own container |
-| `github.githubassets.com` | GitHub UI renders unstyled | Evidence taken from the GitHub REST API |
+| `github.githubassets.com` | GitHub UI rendered unstyled | **Resolved** — domain allowed; real UI captured in `evidence/github-ui/`. While blocked, evidence came from the REST API |
+| Proxy TLS interception | `ERR_CERT_AUTHORITY_INVALID` in Chromium | Launch with `--ignore-certificate-errors`; context-level `ignoreHTTPSErrors` is not enough |
+| `collector.github.com` | Page never reaches `domcontentloaded` | `shot-web.js --block` aborts the request instead of waiting |
 | `googlechromelabs.github.io` | No ChromeDriver download | Fetch the matching driver from `storage.googleapis.com` |
 | `cdn.jsdelivr.net` | No Mermaid from CDN | Install Mermaid from npm |
 | Tag pushes (`refs/tags/*`, HTTP 403) | `v1.0.0` can't be pushed from CI | Pushed from a developer machine — **now live on GitHub** |
@@ -265,7 +267,10 @@ both `1.8`-style and modern version strings.
 
 Every claim in these documents is backed by a committed artefact in
 [`docs/evidence/`](evidence/README.md): **real commands with their raw logs, and
-real pages served to headless Chromium.**
+real pages served to headless Chromium** — including the
+[**real GitHub interface**](evidence/github-ui/README.md): the `v1.0.0` release,
+three merged pull requests, the review on #7, the resolved conflict on #9, and all
+six closed issues.
 
 The rules that make it worth something:
 

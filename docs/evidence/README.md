@@ -104,17 +104,28 @@ These rules are what make the pack worth anything at a viva:
 
 *(the table is extended as each task lands)*
 
-## GitHub's web UI cannot be screenshotted here
+## GitHub's web UI — captured, after the domain was allowed
 
-The network policy permits `github.com` and `api.github.com` but blocks
-`github.githubassets.com`, which serves all of GitHub's CSS and JavaScript.
-Headless Chromium therefore renders GitHub pages as unstyled HTML, which is
-worthless as evidence, so those captures were discarded rather than committed.
+For most of the project `github.githubassets.com` (all of GitHub's CSS and
+JavaScript) was blocked by the network policy, so GitHub pages rendered as
+unstyled HTML. Those captures were discarded rather than committed, and
+GitHub-side facts were evidenced from the **REST API** instead — see
+[`task-15/02-github-state.log`](task-15/02-github-state.log).
 
-**GitHub-side artefacts (issues, repository metadata, branches) are evidenced from
-the GitHub REST API instead** — real data, independently verifiable by re-running
-the same request. For the final report, capture GitHub UI screenshots from an
-ordinary browser.
+Once the domain was allowed, the real interface was captured:
+**[`github-ui/`](github-ui/README.md)** — repository home, the `v1.0.0` release,
+all three merged pull requests, the review on #7, the resolved conflict on #9,
+all six closed issues, the commit history and the branches.
+
+Two further problems had to be solved first, both recorded in that folder's
+README: the proxy's TLS interception needed `--ignore-certificate-errors` at
+browser launch (context-level `ignoreHTTPSErrors` is not sufficient for the
+main-frame navigation), and a still-blocked telemetry host held connections open
+until the page timed out, which `shot-web.js --block` now aborts.
+
+**At no point was an imitation of the GitHub interface produced.** A styled
+lookalike built from API data and presented as a screenshot would be a
+fabrication, and one fabricated image invalidates an entire evidence pack.
 
 ## A note on the two rendered diagrams
 
