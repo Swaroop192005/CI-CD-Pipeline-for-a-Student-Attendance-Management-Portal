@@ -1,0 +1,35 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/tag.sh
+# executed 2026-10-01 15:02:53 UTC on Linux 6.18.44-fc-v50
+
+Annotated release tag:
+
+v1.0.0          v1.0.0 [7m<E2><80><94>[27m MVP: Student Attendance Management Portal[m
+[K
+tag v1.0.0
+Tagger: Swaroop192005 <naikswaroop1910@gmail.com>
+Date:   Thu Oct 1 15:01:02 2026 +0000
+
+v1.0.0 — MVP: Student Attendance Management Portal
+
+Release-ready functional baseline, closing the MVP scope frozen in Task 1.
+
+Capabilities
+- Role-based login for ADMIN, FACULTY and STUDENT, with BCrypt-hashed credentials.
+- Attendance capture for a course session: full roster in one screen, defaulting
+  to PRESENT, refusing a future session date, and editing rather than duplicating
+  when a session is reopened.
+- Paged records list, and search combining roll number, course, date range and
+  workflow state in any subset.
+- Role-based approval workflow DRAFT -> SUBMITTED -> APPROVED | REJECTED, with
+  APPROVED terminal and every transition refused at the service layer rather than
+  hidden in the UI. Only an ADMIN may approve or reject; rejection requires a remark.
+- Summary dashboard with attendance percentage per student per course computed
+  from approved records only, below-threshold students flagged against a
+  configurable threshold, and counts per workflow state.
+- Students see only their own attendance, resolved from the authenticated
+
+Tag points at: c0948c6853415282598eb16d1bb4af73e16f1281
+Push to origin is refused by policy in this environment:
+error: RPC failed; HTTP 403 curl 22 The requested URL returned error: 403
+
+[exit code: 0]

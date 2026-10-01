@@ -95,6 +95,12 @@ These rules are what make the pack worth anything at a viva:
 | 05 | `08-branch-merge-graph.png` / `.log` | Feature branch, two commits and the merge commit |
 | 05 | `09-pull-request.png` / `.log` | PR #7 state, the review, and the issues it closed |
 | 05 | `10-test-run.png` / `.log` | 17 tests passing |
+| 06 | `01-two-sessions-recorded.png` … `06-search-empty-state.png` | **Live app**: 16 records, dashboard with percentages and SHORTAGE flags, approve/reject, combined search, student view, empty state |
+| 06 | `07-merge-conflict.png` / `.log` | **A genuine merge conflict** with both sides' markers |
+| 06 | `08-conflict-resolved.png` / `.log` | The resolution and the resulting history |
+| 06 | `09-release-tag.png` / `.log` | Annotated tag `v1.0.0`, **including the HTTP 403 that blocks pushing it** |
+| 06 | `10-test-run.png` / `.log` | 37 tests passing |
+| 06 | `11-branch-graph.png` / `.log` | Three feature branches and three merges |
 
 *(the table is extended as each task lands)*
 

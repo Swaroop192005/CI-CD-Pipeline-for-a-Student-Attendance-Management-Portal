@@ -1,0 +1,28 @@
+$ git log --graph --oneline --decorate -14
+# executed 2026-10-01 15:02:57 UTC on Linux 6.18.44-fc-v50
+
+*   [33mc0948c6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mclaude/determined-goldberg-ml3brm[m[33m, [m[1;33mtag: [m[1;33mv1.0.0[m[33m, [m[1;31morigin/claude/determined-goldberg-ml3brm[m[33m)[m Merge pull request #9 from fe[m [33m[m[33m[m[1;36m[m[33m[m[1;32m[m[33m[m[1;33m[m[1;33m[m[33m[m[1;31m[m[33m[mature/US-04-admin-master-data[m
+[31m|[m[32m\[m  [m
+[31m|[m *   [33m297d986[m[33m ([m[1;31morigin/feature/US-04-admin-master-data[m[33m, [m[1;32mfeature/US-04-admin-master-data[m[33m)[m merge: integrate approval-workflow base into admin m[m [31m[m[33m[m[33m[m[1;31m[m[33m[m[1;32m[m[33m[master-data branch[m
+[31m|[m [33m|[m[31m\[m  [m
+[31m|[m [33m|[m[31m/[m  [m
+[31m|[m[31m/[m[33m|[m   [m
+* [33m|[m   [33m7843925[m Merge pull request #8 from feature/US-12-approval-workflow[m
+[35m|[m[36m\[m [33m\[m  [m
+[35m|[m * [33m|[m [33mb6653d0[m[33m ([m[1;31morigin/feature/US-12-approval-workflow[m[33m, [m[1;32mfeature/US-12-approval-workflow[m[33m)[m feat(task-06): complete the MVP with approval workfl[m [35m[m[33m[m[33m[m[33m[m[1;31m[m[33m[m[1;32m[m[33m[mow, search and dashboard[m
+[35m|[m[35m/[m [33m/[m  [m
+[35m|[m * [33mdb6b954[m feat(task-06): add admin master-data screens for courses and students[m
+[35m|[m[35m/[m  [m
+* [33me17347c[m docs(task-05): record the branching workflow, review and the defect found[m
+*   [33m6cc23cc[m Merge pull request #7 from feature/US-06-record-attendance[m
+[1;31m|[m[1;32m\[m  [m
+[1;31m|[m * [33m824717d[m[33m ([m[1;31morigin/feature/US-06-record-attendance[m[33m, [m[1;32mfeature/US-06-record-attendance[m[33m)[m fix(task-05): address review findings on silent data l[m [1;31m[m[33m[m[33m[m[1;31m[m[33m[m[1;32m[m[33m[moss and seeder scan[m
+[1;31m|[m * [33m371639d[m feat(task-05): implement attendance capture and the paged records list[m
+[1;31m|[m[1;31m/[m  [m
+* [33m6882ef1[m docs(task-04): initialise repository with README, templates and branch policy[m
+* [33m1dceb5d[m feat(task-03): add SRS, architecture, data model and a verified local setup[m
+* [33mf27fa96[m docs(task-02): add backlog, sprint plan, Definition of Done and DevOps workflow[m
+* [33mfbf3501[m build(evidence): add screenshot capture framework for per-task proof[m
+* [33mb4ea3a1[m docs(task-01): define problem, stakeholders, constraints and frozen MVP scope[m
+[K
+[exit code: 0]

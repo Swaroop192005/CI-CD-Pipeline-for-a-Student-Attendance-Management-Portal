@@ -161,6 +161,7 @@ ATTENDANCE_THRESHOLD=80 SERVER_PORT=9090 scripts/app-control.sh start --port 909
 | 3 | [Requirements, Architecture and Technology Setup](docs/03-architecture.md) |
 | 4 | [Git and GitHub Repository Initialization](docs/04-git-repository.md) |
 | 5 | [Feature Development with Branching](docs/05-feature-development.md) |
+| 6 | [MVP Completion and Git Collaboration](docs/06-mvp-completion.md) |
 | — | [Contributing: branch policy, commits, review](CONTRIBUTING.md) |
 | — | [Evidence pack: rules and index](docs/evidence/README.md) |
 

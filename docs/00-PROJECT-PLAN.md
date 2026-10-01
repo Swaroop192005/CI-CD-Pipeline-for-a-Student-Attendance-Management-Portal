@@ -58,7 +58,7 @@ successes, and every terminal image ships with the log it was rendered from.
 | 3 | Requirements, Architecture and Technology Setup | ✅ Done | `docs/03-architecture.md` | `evidence/task-03/` |
 | 4 | Git and GitHub Repository Initialization | ✅ Done | `docs/04-git-repository.md`, `README.md`, `.github/` | `evidence/task-04/` |
 | 5 | Feature Development with Branching | ✅ Done | `docs/05-feature-development.md`, PR #7 | `evidence/task-05/` |
-| 6 | MVP Completion and Git Collaboration | ⬜ Pending | tagged release `v1.0.0` | `evidence/task-06/` |
+| 6 | MVP Completion and Git Collaboration | ✅ Done | `docs/06-mvp-completion.md`, tag `v1.0.0` | `evidence/task-06/` |
 | 7 | Jenkins Installation and CI Job | ⬜ Pending | `docs/07-jenkins-ci.md`, `jenkins/` | `evidence/task-07/` |
 | 8 | Pipeline as Code and Server Deployment | ⬜ Pending | `Jenkinsfile` | `evidence/task-08/` |
 | 9 | Selenium Test Design and Local Execution | ⬜ Pending | `src/test/java/.../selenium/` | `evidence/task-09/` |
