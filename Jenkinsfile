@@ -66,8 +66,7 @@ pipeline {
                 // leaves deployment unexecuted rather than executed-and-rolled-back.
                 sh '''
                     mvn -B $MAVEN_OPTS -Pselenium verify \
-                        -Dwebdriver.chrome.driver=/opt/selenium/chromedriver \
-                        -Dselenium.chrome.binary=/opt/pw-browsers/chromium-1194/chrome-linux/chrome \
+                        -Dselenium.remote.url=${SELENIUM_URL} \
                         -Dselenium.screenshot.dir=$WORKSPACE/selenium-failures
                 '''
             }
