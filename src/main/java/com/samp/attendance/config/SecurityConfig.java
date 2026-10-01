@@ -2,36 +2,54 @@ package com.samp.attendance.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
- * Baseline web security.
+ * Web security and the role rules for every URL (US-01, US-02).
  *
- * <p>At this stage (Task 3) the portal has no user-facing features yet, so only
- * the landing page, the health endpoint and static assets are opened up and
- * everything else already requires authentication. Real authentication and the
- * three roles (ADMIN, FACULTY, STUDENT) arrive with US-01 and US-02 in Task 5,
- * which replaces the placeholder form login configured here.
+ * <p>Method-level security is enabled as well, because URL rules alone are not
+ * enough: AC-14.1 requires an illegal action to be refused by the service layer,
+ * so the service can annotate the actions only an ADMIN may perform.
  */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/actuator/health/**", "/actuator/info",
-                                 "/css/**", "/js/**", "/images/**", "/h2-console/**").permitAll()
+                .requestMatchers("/", "/login", "/actuator/health/**", "/actuator/info",
+                                 "/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/dashboard", "/admin/**").hasRole("ADMIN")
+                .requestMatchers("/my-attendance").hasRole("STUDENT")
+                .requestMatchers("/attendance/**").hasAnyRole("FACULTY", "ADMIN")
                 .anyRequest().authenticated())
-            // The H2 console renders in a frameset; permitted only because the
-            // console itself is disabled outside the dev profile.
+            .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/attendance", false)
+                .failureUrl("/login?error")
+                .permitAll())
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?loggedOut")
+                .permitAll())
+            // The H2 console renders in a frameset; it is only reachable when the
+            // dev profile enables it.
             .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
-            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
-            .formLogin(form -> form.permitAll())
-            .logout(logout -> logout.permitAll());
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
         return http.build();
     }
 }

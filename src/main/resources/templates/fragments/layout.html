@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:fragment="head(title)">
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${title} + ' — Attendance Portal'">Attendance Portal</title>
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header class="topbar" th:fragment="topbar">
+  <span class="brand">Attendance Portal</span>
+  <nav>
+    <a th:href="@{/attendance}" sec:authorize="hasAnyRole('FACULTY','ADMIN')" data-testid="nav-records">Records</a>
+    <a th:href="@{/attendance/new}" sec:authorize="hasAnyRole('FACULTY','ADMIN')" data-testid="nav-new">Mark attendance</a>
+  </nav>
+  <div class="userbox">
+    <span data-testid="current-user" sec:authentication="name">user</span>
+    <span class="role" data-testid="current-role"
+          th:text="${#strings.replace(#authentication.getAuthorities()[0].getAuthority(), 'ROLE_', '')}">ROLE</span>
+    <form th:action="@{/logout}" method="post" style="display:inline">
+      <button type="submit" data-testid="logout">Sign out</button>
+    </form>
+  </div>
+</header>
+</body>
+</html>

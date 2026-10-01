@@ -1,0 +1,15 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/show_bug.sh
+# executed 2026-10-01 14:34:45 UTC on Linux 6.18.44-fc-v50
+
+Reproducing: GET /attendance returns 500 once records exist
+
+  POST /login          -> HTTP 302
+  GET  /attendance     -> HTTP 500
+
+Root cause from the application log:
+  Caused by: org.hibernate.LazyInitializationException: could not initialize proxy [com.samp.attendance.domain.AppUser#2] - no Session
+
+  open-in-view is disabled, so the Thymeleaf template cannot initialise
+  the lazy updatedBy proxy after the transaction has closed.
+
+[exit code: 0]
