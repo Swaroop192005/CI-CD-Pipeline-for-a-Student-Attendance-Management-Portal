@@ -1,0 +1,44 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/cd.sh
+# executed 2026-10-01 16:11:35 UTC on Linux 6.18.44-fc-v50
+
+BUILD #10 — commit to running container, no manual step
+
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] { (Checkout)
+[Pipeline] { (Build)
+[Pipeline] { (Test)
+[Pipeline] { (UI quality gate (Selenium))
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 20.93 s -- in com.samp.attendance.selenium.CriticalJourneysIT
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0
+[Pipeline] { (Package)
+[Pipeline] { (Deploy)
+[Pipeline] { (Verify)
+{"status":"UP","groups":["liveness","readiness"]}+ echo
+[Pipeline] { (Docker build)
+Step 12/13 : HEALTHCHECK --interval=15s --timeout=4s --start-period=45s --retries=4   CMD curl -fsS "http://localhost:${SERVER_PORT}/actuator/health" | grep -q '"status":"UP"' || exit 1
+[Pipeline] { (Publish image)
++ echo Published localhost:5000/samp-attendance:1.0.10
+Published localhost:5000/samp-attendance:1.0.10
+[Pipeline] { (Deploy container)
++ docker rm -f samp-attendance-run
+
+Images in the registry (localhost:5000):
+   {
+       "repositories": [
+           "samp-attendance"
+       ]
+   }
+Tags published for samp-attendance:
+   {
+       "name": "samp-attendance",
+       "tags": [
+           "latest",
+           "1.0.10"
+       ]
+   }
+
+Container deployed by the pipeline:
+samp-attendance-run  localhost:5000/samp-attendance:1.0.10  Up 26 seconds (healthy)  0.0.0.0:8081->8080/tcp
+   health -> {"status":"UP","groups":["liveness","readiness"]}
+
+[exit code: 0]
