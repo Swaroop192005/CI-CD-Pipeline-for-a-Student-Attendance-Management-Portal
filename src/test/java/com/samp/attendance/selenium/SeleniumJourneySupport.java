@@ -6,6 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.net.URL;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,16 +43,7 @@ abstract class SeleniumJourneySupport {
 
     @BeforeEach
     void startBrowser() {
-        String driverPath = System.getProperty("webdriver.chrome.driver");
-        if (driverPath != null && !driverPath.isBlank()) {
-            System.setProperty("webdriver.chrome.driver", driverPath);
-        }
-
         ChromeOptions options = new ChromeOptions();
-        String binary = System.getProperty("selenium.chrome.binary");
-        if (binary != null && !binary.isBlank()) {
-            options.setBinary(binary);
-        }
         if (!"false".equals(System.getProperty("selenium.headless"))) {
             options.addArguments("--headless=new");
         }
@@ -57,8 +51,32 @@ abstract class SeleniumJourneySupport {
         options.addArguments("--no-sandbox", "--disable-dev-shm-usage",
                              "--window-size=1366,900", "--disable-gpu");
 
-        driver = new ChromeDriver(options);
-        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        String remote = System.getProperty("selenium.remote.url", "");
+        if (!remote.isBlank()) {
+            // CI path: the browser runs in a separate Selenium container.
+            // Jenkins' own image has neither Chrome nor its shared libraries, and
+            // this environment blocks apt, so driving a remote browser is the only
+            // way to run these journeys inside the pipeline. Both containers use
+            // host networking, so the browser can reach the app's random port.
+            try {
+                driver = new RemoteWebDriver(new URL(remote), options);
+            } catch (Exception e) {
+                throw new IllegalStateException("Cannot reach remote WebDriver at " + remote, e);
+            }
+        } else {
+            // Local path: ChromeDriver and Chromium on this machine.
+            String driverPath = System.getProperty("webdriver.chrome.driver");
+            if (driverPath != null && !driverPath.isBlank()) {
+                System.setProperty("webdriver.chrome.driver", driverPath);
+            }
+            String binary = System.getProperty("selenium.chrome.binary");
+            if (binary != null && !binary.isBlank()) {
+                options.setBinary(binary);
+            }
+            driver = new ChromeDriver(options);
+        }
+
+        wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         ScreenshotOnFailure.bind(driver);
     }
 

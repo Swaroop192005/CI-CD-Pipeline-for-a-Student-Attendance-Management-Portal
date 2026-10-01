@@ -167,6 +167,7 @@
                 <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
                 <selenium.chrome.binary>${selenium.chrome.binary}</selenium.chrome.binary>
                 <selenium.screenshot.dir>${selenium.screenshot.dir}</selenium.screenshot.dir>
+                <selenium.remote.url>${selenium.remote.url}</selenium.remote.url>
               </systemPropertyVariables>
             </configuration>
             <executions>
@@ -185,6 +186,8 @@
         <webdriver.chrome.driver>${project.basedir}/.tools/chromedriver</webdriver.chrome.driver>
         <selenium.chrome.binary>/opt/pw-browsers/chromium-1194/chrome-linux/chrome</selenium.chrome.binary>
         <selenium.screenshot.dir>${project.basedir}/docs/evidence/task-09/failures</selenium.screenshot.dir>
+        <!-- Empty means drive a local browser; CI overrides it with the Grid URL. -->
+        <selenium.remote.url></selenium.remote.url>
       </properties>
     </profile>
   </profiles>

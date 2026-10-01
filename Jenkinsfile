@@ -29,6 +29,8 @@ pipeline {
         // Kept outside the workspace so a `clean` cannot wipe the dependency cache.
         MAVEN_OPTS  = '-Dmaven.repo.local=/var/maven-cache/repository'
         WEBAPPS_DIR = '/deploy/webapps'
+        // The browser runs in the samp-selenium container; see jenkins/docker-compose.yml.
+        SELENIUM_URL = 'http://localhost:4444/wd/hub'
     }
 
     stages {
@@ -54,6 +56,27 @@ pipeline {
                 // quality gate in Task 10 would have nothing to show for a red build.
                 always {
                     junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: false
+                }
+            }
+        }
+
+        stage('UI quality gate (Selenium)') {
+            steps {
+                // The gate. Deploy sits after this stage, so a failing journey
+                // leaves deployment unexecuted rather than executed-and-rolled-back.
+                sh '''
+                    mvn -B $MAVEN_OPTS -Pselenium verify \
+                        -Dwebdriver.chrome.driver=/opt/selenium/chromedriver \
+                        -Dselenium.chrome.binary=/opt/pw-browsers/chromium-1194/chrome-linux/chrome \
+                        -Dselenium.screenshot.dir=$WORKSPACE/selenium-failures
+                '''
+            }
+            post {
+                always {
+                    junit testResults: 'target/failsafe-reports/*.xml', allowEmptyResults: true
+                    // A failing journey writes a screenshot; archive it so the
+                    // diagnosis is attached to the build that failed.
+                    archiveArtifacts artifacts: 'selenium-failures/**', allowEmptyArchive: true
                 }
             }
         }

@@ -44,11 +44,25 @@ services:
       # Warm Maven cache so builds do not re-download the world on every run.
       - ${HOME}/.m2:/var/maven-cache
       - /root/.ccr/ca-bundle.crt:/etc/ssl/certs/agent-proxy-ca.crt:ro
+
       # Shared with the Tomcat container: the pipeline's deploy stage drops the
       # WAR here and Tomcat auto-deploys it. This is what makes a real server
       # deployment possible without a Docker socket inside Jenkins.
       - ${REPO_PATH:-/home/user/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal}/deploy/webapps:/deploy/webapps
       # The working clone, so a job can use it as an SCM source without network.
       - ${REPO_PATH:-/home/user/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal}:/workspace/samp:ro
+  # The browser for the quality gate runs here, not inside Jenkins: the Jenkins
+  # image has neither Chrome nor its shared libraries, and apt is blocked by
+  # network policy. Host networking lets this browser reach the application on
+  # whatever random port the test context binds.
+  selenium:
+    image: selenium/standalone-chrome:latest
+    container_name: samp-selenium
+    network_mode: host
+    restart: unless-stopped
+    shm_size: 2gb
+    environment:
+      SE_NODE_MAX_SESSIONS: "2"
+
 volumes:
   jenkins_home:
