@@ -1,0 +1,6 @@
+$ sh -c mvn -B -Pselenium verify 2>&1 | grep -E 'Running com.samp|Tests run:|BUILD|T E S T S|INTEGRATION'
+# executed 2026-10-01 15:46:17 UTC on Linux 6.18.44-fc-v50
+
+[INFO] BUILD FAILURE
+
+[exit code: 0]
