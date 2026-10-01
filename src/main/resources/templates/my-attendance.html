@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="~{fragments/layout :: head('My attendance')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: topbar}"></header>
+<main>
+  <h1>My attendance</h1>
+  <p class="sub">
+    Roll number <span class="mono" data-testid="my-roll" th:text="${rollNumber}">22CS001</span>.
+    Percentages count approved records only. Minimum threshold
+    <span class="mono" th:text="${threshold} + '%'">75%</span>.
+  </p>
+
+  <div class="card">
+    <h2>Percentage by course</h2>
+    <table data-testid="my-summary">
+      <thead><tr><th>Course</th><th>Approved sessions</th><th>Attended</th><th>Percentage</th></tr></thead>
+      <tbody>
+        <tr th:each="row : ${rows}" th:classappend="${row.belowThreshold} ? 'below' : ''">
+          <td class="mono" th:text="${row.courseCode}">CS301</td>
+          <td th:text="${row.approvedSessions}">0</td>
+          <td th:text="${row.attendedSessions}">0</td>
+          <td>
+            <span class="pct" th:classappend="${row.belowThreshold} ? 'low' : 'good'"
+                  th:text="${row.displayPercentage()}"
+                  th:attr="data-testid='my-pct-' + ${row.courseCode}">0%</span>
+            <span class="flag" th:if="${row.belowThreshold}"
+                  th:attr="data-testid='my-shortage-' + ${row.courseCode}">SHORTAGE</span>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(rows)}">
+          <td colspan="4" class="empty" data-testid="my-summary-empty">
+            No approved attendance yet.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>My session records</h2>
+    <table data-testid="my-records">
+      <thead><tr><th>Course</th><th>Session date</th><th>Status</th><th>Workflow</th></tr></thead>
+      <tbody>
+        <tr th:each="r : ${records}">
+          <td class="mono" th:text="${r.course.code}">CS301</td>
+          <td class="mono" th:text="${r.sessionDate}">2026-10-01</td>
+          <td><span class="badge" th:classappend="'b-' + ${r.status}" th:text="${r.status}">PRESENT</span></td>
+          <td><span class="badge" th:classappend="'b-' + ${r.workflowState}" th:text="${r.workflowState}">DRAFT</span></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(records)}">
+          <td colspan="4" class="empty">No records yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+</body>
+</html>

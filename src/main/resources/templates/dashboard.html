@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="~{fragments/layout :: head('Dashboard')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: topbar}"></header>
+<main>
+  <h1>Summary dashboard</h1>
+  <p class="sub">
+    Attendance percentage per student per course, computed from
+    <strong>approved records only</strong>. Minimum threshold
+    <span class="mono" data-testid="threshold" th:text="${threshold} + '%'">75%</span>.
+  </p>
+
+  <div class="tiles" data-testid="state-tiles">
+    <div class="tile"><div class="n" data-testid="state-count-DRAFT"
+         th:text="${counts.get(T(com.samp.attendance.domain.WorkflowState).DRAFT)}">0</div>
+         <div class="l">Draft</div></div>
+    <div class="tile info"><div class="n" data-testid="state-count-SUBMITTED"
+         th:text="${counts.get(T(com.samp.attendance.domain.WorkflowState).SUBMITTED)}">0</div>
+         <div class="l">Awaiting approval</div></div>
+    <div class="tile ok"><div class="n" data-testid="state-count-APPROVED"
+         th:text="${counts.get(T(com.samp.attendance.domain.WorkflowState).APPROVED)}">0</div>
+         <div class="l">Approved</div></div>
+    <div class="tile"><div class="n" data-testid="state-count-REJECTED"
+         th:text="${counts.get(T(com.samp.attendance.domain.WorkflowState).REJECTED)}">0</div>
+         <div class="l">Rejected</div></div>
+    <div class="tile warn"><div class="n" data-testid="below-threshold-count"
+         th:text="${belowCount}">0</div>
+         <div class="l">Below threshold</div></div>
+  </div>
+
+  <div class="card" th:if="${pendingCount > 0}">
+    <p>
+      <strong data-testid="pending-count" th:text="${pendingCount}">0</strong>
+      record(s) awaiting your approval —
+      <a th:href="@{/attendance/search(state='SUBMITTED')}" data-testid="pending-link">review them</a>
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Attendance by student and course</h2>
+    <table data-testid="dashboard">
+      <thead>
+        <tr><th>Roll no.</th><th>Student</th><th>Course</th>
+            <th>Approved sessions</th><th>Attended</th><th>Percentage</th></tr>
+      </thead>
+      <tbody>
+        <tr th:each="row : ${rows}" th:classappend="${row.belowThreshold} ? 'below' : ''"
+            th:attr="data-testid=${row.belowThreshold} ? 'below-threshold-row' : 'dashboard-row'">
+          <td class="mono" th:text="${row.rollNumber}">22CS001</td>
+          <td th:text="${row.studentName}">Name</td>
+          <td class="mono" th:text="${row.courseCode}">CS301</td>
+          <td th:text="${row.approvedSessions}">0</td>
+          <td th:text="${row.attendedSessions}">0</td>
+          <td>
+            <span class="pct" th:classappend="${row.belowThreshold} ? 'low' : 'good'"
+                  th:text="${row.displayPercentage()}"
+                  th:attr="data-testid='pct-' + ${row.rollNumber} + '-' + ${row.courseCode}">0%</span>
+            <span class="flag" th:if="${row.belowThreshold}">SHORTAGE</span>
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(rows)}">
+          <td colspan="6" class="empty" data-testid="dashboard-empty">
+            No approved records yet. Percentages appear once records are approved.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+</body>
+</html>
