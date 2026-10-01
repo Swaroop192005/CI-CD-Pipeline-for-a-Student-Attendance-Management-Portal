@@ -1,0 +1,6 @@
+$ sh -c mvn -B clean package 2>&1 | grep -E 'Tests run|BUILD|T E S T S|Running com' 
+# executed 2026-10-01 14:41:35 UTC on Linux 6.18.44-fc-v50
+
+[INFO] BUILD FAILURE
+
+[exit code: 0]

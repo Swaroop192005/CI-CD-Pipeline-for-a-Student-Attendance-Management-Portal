@@ -160,6 +160,7 @@ ATTENDANCE_THRESHOLD=80 SERVER_PORT=9090 scripts/app-control.sh start --port 909
 | 2 | [Agile Planning and DevOps Workflow](docs/02-agile-planning.md) |
 | 3 | [Requirements, Architecture and Technology Setup](docs/03-architecture.md) |
 | 4 | [Git and GitHub Repository Initialization](docs/04-git-repository.md) |
+| 5 | [Feature Development with Branching](docs/05-feature-development.md) |
 | — | [Contributing: branch policy, commits, review](CONTRIBUTING.md) |
 | — | [Evidence pack: rules and index](docs/evidence/README.md) |
 
@@ -189,5 +190,5 @@ merge a red build.
 
 ## Status
 
-Task 4 of 15 complete — repository initialised with README, `.gitignore`, issue
-templates and a documented branch policy.
+Task 5 of 15 complete — attendance capture and the records list are working,
+delivered through a reviewed pull request.

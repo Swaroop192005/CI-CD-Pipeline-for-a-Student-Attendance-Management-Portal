@@ -1,0 +1,26 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/pr_evidence.sh
+# executed 2026-10-01 14:41:32 UTC on Linux 6.18.44-fc-v50
+
+Pull request #7
+
+  number             7
+  title              feat(task-05): attendance capture and paged records list (US-01, US-06, US-07)
+  state              closed
+  merged             True
+  head               feature/US-06-record-attendance
+  base               claude/determined-goldberg-ml3brm
+  commits            2
+  additions          1433
+  deletions          58
+  changed_files      37
+  merge_commit_sha   6cc23cce096c8b856cee794b38f8deca6e8dc338
+
+Reviews:
+  COMMENTED  by Swaroop192005
+  ## Review — 2 changes needed before merge
+
+Issues closed by this PR:
+  #1 closed  [US] US-06 — Record attendance for a course session
+  #2 closed  [US] US-01 — Role-based login
+
+[exit code: 0]

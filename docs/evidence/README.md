@@ -90,6 +90,11 @@ These rules are what make the pack worth anything at a viva:
 | 04 | `repo-structure.png` / `.log` | Tracked files after repository initialisation |
 | 04 | `branch-and-remote.png` / `.log` | Branch tracking, remote and `.gitignore` rule count |
 | 04 | `git-commit-evidence.png` / `.log` | The Task 4 commit |
+| 05 | `01-login-page.png` … `07-saved-records-fixed.png` | **Live app**: login, roster defaulting to PRESENT, future-date refusal, 8 saved records |
+| 05 | `06-defect-lazy-init.png` / `.log` | **A genuine HTTP 500** — LazyInitializationException on the records list, kept as required by rule 3 |
+| 05 | `08-branch-merge-graph.png` / `.log` | Feature branch, two commits and the merge commit |
+| 05 | `09-pull-request.png` / `.log` | PR #7 state, the review, and the issues it closed |
+| 05 | `10-test-run.png` / `.log` | 17 tests passing |
 
 *(the table is extended as each task lands)*
 
