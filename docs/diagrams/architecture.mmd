@@ -1,0 +1,27 @@
+%% Layered application architecture and the runtime it is deployed onto.
+flowchart TB
+    classDef cli  fill:#fff,stroke:#24292f,stroke-width:2px,color:#24292f
+    classDef web  fill:#ddf4ff,stroke:#0969da,color:#0a3069
+    classDef svc  fill:#dafbe1,stroke:#1a7f37,color:#0a3622
+    classDef repo fill:#fff8c5,stroke:#9a6700,color:#4d2d00
+    classDef db   fill:#ffe8d4,stroke:#bc4c00,color:#762c00
+    classDef ops  fill:#fbefff,stroke:#8250df,color:#3e1f79
+
+    B["Browser (Thymeleaf-rendered HTML)<br/><i>also driven by Selenium WebDriver in Tasks 9-10</i>"]:::cli
+
+    subgraph APP ["Spring Boot application — attendance-portal.war"]
+        SEC["<b>Security filter chain</b><br/>form login, role checks<br/>ADMIN / FACULTY / STUDENT"]:::web
+        CTL["<b>Controller layer</b> @Controller<br/>HomeController, AttendanceController,<br/>DashboardController, AdminController"]:::web
+        SVC["<b>Service layer</b> @Service<br/>business rules + workflow state machine<br/>AttendanceService, WorkflowService, DashboardService"]:::svc
+        REP["<b>Repository layer</b> Spring Data JPA<br/>AttendanceRecordRepository, StudentRepository,<br/>CourseRepository, AppUserRepository"]:::repo
+        ACT["<b>Actuator</b><br/>/actuator/health, /actuator/info"]:::ops
+    end
+
+    DB[("<b>H2 database</b><br/>file mode: ./data/sampdb<br/><i>JDBC URL externalised</i>")]:::db
+    TOM["<b>Apache Tomcat 10.1</b><br/>embedded for dev · standalone for deploy"]:::ops
+    MON["Docker HEALTHCHECK<br/>Ansible post-deploy verification"]:::ops
+
+    B -->|"HTTP"| SEC --> CTL --> SVC --> REP -->|"JDBC"| DB
+    SVC -.->|"enforces DRAFT→SUBMITTED→APPROVED/REJECTED"| SVC
+    APP --- TOM
+    MON -->|"GET /actuator/health"| ACT

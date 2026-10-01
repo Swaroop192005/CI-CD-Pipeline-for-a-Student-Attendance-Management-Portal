@@ -1,0 +1,27 @@
+%% Use-case view: actors and the use cases each role may invoke (US-01..US-16).
+flowchart LR
+    classDef actor fill:#fff,stroke:#24292f,stroke-width:2px,color:#24292f
+    classDef uc    fill:#ddf4ff,stroke:#0969da,color:#0a3069
+    classDef ucA   fill:#ffe8d4,stroke:#bc4c00,color:#762c00
+    classDef ucS   fill:#fbefff,stroke:#8250df,color:#3e1f79
+
+    F(("FACULTY")):::actor
+    A(("ADMIN")):::actor
+    S(("STUDENT")):::actor
+
+    subgraph SYS ["Student Attendance Management Portal"]
+        U1(["Sign in / sign out<br/><i>US-01, US-03</i>"]):::uc
+        U2(["Record attendance<br/>for a session<br/><i>US-06</i>"]):::uc
+        U3(["View records<br/>(paged)<br/><i>US-07</i>"]):::uc
+        U4(["Update a record<br/><i>US-08</i>"]):::uc
+        U5(["Search / filter<br/>records<br/><i>US-09</i>"]):::uc
+        U6(["Submit for<br/>approval<br/><i>US-11</i>"]):::uc
+        U7(["Approve / reject<br/>submission<br/><i>US-12, US-13</i>"]):::ucA
+        U8(["Maintain courses<br/>&amp; students<br/><i>US-04, US-05</i>"]):::ucA
+        U9(["Summary dashboard<br/>&amp; pending queue<br/><i>US-15, US-16</i>"]):::ucA
+        U10(["View own attendance<br/>&amp; percentage<br/><i>US-10</i>"]):::ucS
+    end
+
+    F --- U1 & U2 & U3 & U4 & U5 & U6
+    A --- U1 & U3 & U5 & U7 & U8 & U9
+    S --- U1 & U10

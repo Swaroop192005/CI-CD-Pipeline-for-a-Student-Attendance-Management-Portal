@@ -1,0 +1,57 @@
+$ git show --stat --no-patch HEAD
+# executed 2026-10-01 14:14:06 UTC on Linux 6.18.44-fc-v50
+
+[33mcommit 8afef5d066f85a369dcb7df22ac707ff1b91be65[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mclaude/determined-goldberg-ml3brm[m[33m)[m[m
+Author: Swaroop192005 <naikswaroop1910@gmail.com>[m
+Date:   Thu Oct 1 14:14:06 2026 +0000[m
+[m
+    feat(task-03): add SRS, architecture, data model and a verified local setup[m
+    [m
+    Design the system and prove the development setup actually works.[m
+    [m
+    Requirements and design[m
+    - SRS summary: 20 functional requirements (FR-01..FR-20) and 11 non-functional[m
+      requirements (NFR-01..NFR-11), each traced to the user story that specifies it[m
+      and the acceptance criteria that prove it.[m
+    - Four diagrams authored as Mermaid and rendered to PNG+SVG: use-case view,[m
+      layered architecture, ER model and the approval state machine.[m
+    - Data model: 5 tables with constraints, including unique(student, course,[m
+      session_date) which is what enforces "no duplicate records for a session", and[m
+      the attendance-percentage rule that counts APPROVED records only.[m
+    - Endpoint list, externalised configuration table and a fixed port map (8080 app,[m
+      8081 container, 8082 Tomcat, 8090 Jenkins, 5000 registry) to pre-empt the port[m
+      collisions flagged as risk R5.[m
+    [m
+    Application skeleton[m
+    - Maven project: Spring Boot 3.3.13, Java 17, war packaging with the embedded[m
+      Tomcat scoped provided, so one artefact both runs locally and deploys to a[m
+      standalone Tomcat 10.1.[m
+    - Baseline security filter chain, landing page proving the Thymeleaf path, and[m
+      externalised settings (port, datasource, attendance threshold) read from[m
+      environment variables with local defaults.[m
+    - Four smoke tests: context loads, health endpoint is public and UP, landing page[m
+      renders the configured threshold, and a protected URL is intercepted.[m
+    [m
+    One real defect, found by running rather than by testing[m
+    - The build passed while the application could not start: the smoke tests override[m
+      the datasource URL with in-memory H2, so the file-mode default was never[m
+      exercised. H2 2.x refuses AUTO_SERVER=TRUE combined with DB_CLOSE_ON_EXIT=FALSE;[m
+      both were removed. Recorded in docs/03-architecture.md section 9.2 because it is[m
+      exactly the gap the Selenium gate, container health check and Ansible[m
+      verification exist to close.[m
+    - A test assertion was also corrected: it expected a 302 from a protected URL, but[m
+      TestRestTemplate follows redirects, so it now asserts the login form is served[m
+      in place of the protected resource.[m
+    [m
+    Tooling[m
+    - scripts/app-control.sh starts, stops and waits on the app using an explicit PID[m
+      file, because a `pkill -f spring-boot:run` pattern also matches the shell that[m
+      invokes it and kills the caller.[m
+    [m
+    Verified: mvn -B clean package BUILD SUCCESS with 4/4 tests, application UP in 8s,[m
+    /actuator/health returning UP unauthenticated. Evidence in docs/evidence/task-03/.[m
+    [m
+    Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>[m
+    Claude-Session: https://claude.ai/code/session_01VuE58DFZzXcMeu7bqLZ2L3[m
+[K
+[exit code: 0]

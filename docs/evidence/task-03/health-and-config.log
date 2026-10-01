@@ -1,0 +1,7 @@
+$ sh -c curl -s --noproxy localhost http://localhost:8080/actuator/health | python3 -m json.tool && echo && echo 'Externalised settings in effect:' && curl -s --noproxy localhost http://localhost:8080/ | grep -oE 'data-testid="(profile|threshold|status)">[^<]*' 
+# executed 2026-10-01 14:11:08 UTC on Linux 6.18.44-fc-v50
+
+curl: try 'curl --help' or 'curl --manual' for more information
+Expecting value: line 1 column 1 (char 0)
+
+[exit code: 1]

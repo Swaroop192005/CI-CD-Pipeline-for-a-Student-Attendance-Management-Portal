@@ -1,0 +1,46 @@
+%% Data model for the MVP.
+erDiagram
+    APP_USER ||--o{ ATTENDANCE_RECORD : "records / reviews"
+    COURSE   ||--o{ ATTENDANCE_RECORD : "has"
+    STUDENT  ||--o{ ATTENDANCE_RECORD : "is marked in"
+    COURSE   ||--o{ ENROLMENT         : "offers"
+    STUDENT  ||--o{ ENROLMENT         : "enrols in"
+    APP_USER ||--o| STUDENT           : "may be"
+
+    APP_USER {
+        bigint   id              PK
+        varchar  username        UK "unique login"
+        varchar  password_hash      "BCrypt"
+        varchar  full_name
+        varchar  role               "ADMIN | FACULTY | STUDENT"
+        boolean  enabled
+    }
+    COURSE {
+        bigint   id          PK
+        varchar  code        UK "unique, e.g. CS301"
+        varchar  title
+        int      total_sessions
+    }
+    STUDENT {
+        bigint   id           PK
+        varchar  roll_number  UK "unique"
+        varchar  full_name
+        bigint   app_user_id  FK "login for US-10"
+    }
+    ENROLMENT {
+        bigint id         PK
+        bigint student_id FK
+        bigint course_id  FK
+    }
+    ATTENDANCE_RECORD {
+        bigint    id             PK
+        bigint    student_id     FK
+        bigint    course_id      FK
+        date      session_date      "not in the future (AC-06.4)"
+        varchar   status            "PRESENT | ABSENT | LATE"
+        varchar   workflow_state    "DRAFT | SUBMITTED | APPROVED | REJECTED"
+        varchar   remark            "required on reject (AC-13.2)"
+        bigint    recorded_by    FK "APP_USER"
+        bigint    updated_by     FK "APP_USER"
+        timestamp updated_at        "audit trail (AC-14.2)"
+    }

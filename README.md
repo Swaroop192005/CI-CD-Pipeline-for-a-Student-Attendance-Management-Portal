@@ -13,6 +13,7 @@ DevOps toolchain: **Git/GitHub → Jenkins → Maven → Selenium → Docker →
 |---|---|
 | 1 | [Problem Definition and Scope](docs/01-problem-definition-and-scope.md) |
 | 2 | [Agile Planning and DevOps Workflow](docs/02-agile-planning.md) |
+| 3 | [Requirements, Architecture and Technology Setup](docs/03-architecture.md) |
 
 ## Evidence
 
@@ -22,4 +23,4 @@ real commands with their raw logs, and real pages served to headless Chromium.
 
 ## Current status
 
-Task 2 of 15 complete — scope frozen, backlog and Definition of Done agreed.
+Task 3 of 15 complete — architecture designed and the local setup verified by a real build and run.

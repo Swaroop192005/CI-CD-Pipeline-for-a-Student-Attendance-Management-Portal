@@ -77,6 +77,13 @@ These rules are what make the pack worth anything at a viva:
 | 02 | `devops-lifecycle.png` | DevOps lifecycle Plan→Monitor with the tool used at each stage, rendered from `docs/diagrams/devops-lifecycle.mmd` |
 | 02 | `kanban-board.png` | Board state at end of Task 2, showing WIP limits and the 24 backlog stories |
 | 02 | `git-commit-evidence.png` / `.log` | The Task 2 commit |
+| 03 | `maven-build.png` / `.log` | Real `mvn -B clean package` — BUILD SUCCESS, 4/4 tests |
+| 03 | `build-artefact.png` / `.log` | The produced `attendance-portal.war` and its contents |
+| 03 | `app-landing-page.png` | **Live app** at `localhost:8080`, showing config resolved at runtime |
+| 03 | `actuator-health.png` | **Live** `/actuator/health` returning `UP` without authentication |
+| 03 | `health-and-config.png` / `.log` | Health JSON and the externalised settings in effect |
+| 03 | `use-case.png`, `architecture.png`, `er-model.png`, `workflow-state-machine.png` | Design diagrams rendered from committed `.mmd` sources |
+| 03 | `git-commit-evidence.png` / `.log` | The Task 3 commit |
 
 *(the table is extended as each task lands)*
 

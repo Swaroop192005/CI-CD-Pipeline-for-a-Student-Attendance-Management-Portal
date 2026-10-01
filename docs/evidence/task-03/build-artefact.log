@@ -1,0 +1,25 @@
+$ sh -c ls -lh target/*.war && echo && unzip -l target/attendance-portal.war | head -18
+# executed 2026-10-01 14:08:45 UTC on Linux 6.18.44-fc-v50
+
+README.md  docs  pom.xml  scripts  src	target
+
+Archive:  target/attendance-portal.war
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+        0  2026-10-01 14:08   META-INF/
+      498  2026-10-01 14:08   META-INF/MANIFEST.MF
+        0  1980-02-01 00:00   META-INF/services/
+       66  1980-02-01 00:00   META-INF/services/java.nio.file.spi.FileSystemProvider
+        0  1980-02-01 00:00   org/
+        0  1980-02-01 00:00   org/springframework/
+        0  1980-02-01 00:00   org/springframework/boot/
+        0  1980-02-01 00:00   org/springframework/boot/loader/
+        0  1980-02-01 00:00   org/springframework/boot/loader/jar/
+      461  1980-02-01 00:00   org/springframework/boot/loader/jar/JarEntriesStream$InputStreamSupplier.class
+     3757  1980-02-01 00:00   org/springframework/boot/loader/jar/JarEntriesStream.class
+     1617  1980-02-01 00:00   org/springframework/boot/loader/jar/ManifestInfo.class
+     5125  1980-02-01 00:00   org/springframework/boot/loader/jar/MetaInfVersionsInfo.class
+     2025  1980-02-01 00:00   org/springframework/boot/loader/jar/NestedJarFile$JarEntriesEnumeration.class
+     2584  1980-02-01 00:00   org/springframework/boot/loader/jar/NestedJarFile$JarEntryInflaterInputStream.class
+
+[exit code: 0]

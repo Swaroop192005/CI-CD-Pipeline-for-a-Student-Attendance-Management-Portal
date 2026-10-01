@@ -1,0 +1,25 @@
+%% Role-based approval workflow (US-11..US-14). Transitions are enforced in the
+%% service layer, not merely hidden in the UI (AC-14.1).
+stateDiagram-v2
+    direction LR
+    [*] --> DRAFT : create record<br/>(FACULTY, US-06)
+
+    DRAFT --> SUBMITTED : submit<br/>(FACULTY, US-11)
+    SUBMITTED --> APPROVED : approve<br/>(ADMIN only, US-12)
+    SUBMITTED --> REJECTED : reject + remark<br/>(ADMIN only, US-13)
+    REJECTED --> DRAFT : revise<br/>(FACULTY)
+
+    DRAFT --> DRAFT : edit<br/>(FACULTY, US-08)
+    REJECTED --> REJECTED : edit<br/>(FACULTY, US-08)
+
+    APPROVED --> [*] : terminal — counts<br/>towards dashboard %
+
+    note right of APPROVED
+        AC-12.3: APPROVED is terminal.
+        No transition out of it is permitted.
+    end note
+    note left of SUBMITTED
+        Not editable by FACULTY (AC-08.2).
+        Any transition outside this machine
+        is refused by the service layer.
+    end note
