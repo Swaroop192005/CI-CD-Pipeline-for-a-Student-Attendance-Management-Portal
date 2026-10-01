@@ -1,0 +1,54 @@
+$ /tmp/claude-0/-home-user-CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/166a272b-83d3-52ae-ae83-a1ad485e7b3d/scratchpad/lifecycle.sh
+# executed 2026-10-01 16:04:10 UTC on Linux 6.18.44-fc-v50
+
+
+### 1. IMAGE — build result and tags
+REPOSITORY        TAG       IMAGE ID       SIZE
+samp-attendance   1.0.0     a1ebcfc1a925   532MB
+samp-attendance   latest    a1ebcfc1a925   532MB
+
+### 2. INSPECT — labels and exposed port
+  version=1.0.0
+  revision=f212c22
+  user=samp
+  exposed=8080/tcp 
+
+### 3. RUN — start a container with port mapping and an overridden threshold
+61da9ee5295cab030438f5bdefb29af79d9899178294b893ea2eef0a8fdb38f3
+samp-app  samp-attendance:1.0.0  Up Less than a second (health: starting)  0.0.0.0:8081->8080/tcp
+
+### 4. HEALTHCHECK — wait for the container to report healthy
+  [1s] health=starting
+  [2s] health=starting
+  [3s] health=starting
+  [4s] health=starting
+  [5s] health=starting
+  [6s] health=starting
+  [7s] health=healthy
+
+### 5. VERIFY — the overridden threshold took effect (80%, not the default 75%)
+{"status":"UP","groups":["liveness","readiness"]}
+data-testid="threshold">80%
+
+### 6. LOGS — last lines from the running container
+  2026-10-01T16:04:17.549Z  INFO 1 --- [Student Attendance Management Portal] [           main] c.samp.attendance.AttendanceApplication  : Started AttendanceApplication in 6.574 seconds (process running for 7.068)
+  2026-10-01T16:04:20.715Z  INFO 1 --- [Student Attendance Management Portal] [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+  2026-10-01T16:04:20.716Z  INFO 1 --- [Student Attendance Management Portal] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+  2026-10-01T16:04:20.717Z  INFO 1 --- [Student Attendance Management Portal] [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+
+### 7. STOP
+samp-app
+samp-app -> Exited (143) Less than a second ago
+
+### 8. RESTART — state in the mounted data survives the restart
+  healthy again after 7s
+  GET / -> HTTP 200
+
+### 9. STATS — resource usage of the running container
+samp-app  CPU=0.73%  MEM=429.6MiB / 15.72GiB
+
+### 10. REMOVE
+  container removed
+  confirmed gone
+
+[exit code: 0]

@@ -63,7 +63,7 @@ successes, and every terminal image ships with the log it was rendered from.
 | 8 | Pipeline as Code and Server Deployment | ✅ Done | `Jenkinsfile`, `docs/08-pipeline-and-deployment.md` | `evidence/task-08/` |
 | 9 | Selenium Test Design and Local Execution | ✅ Done | `docs/09-selenium-tests.md`, `src/test/java/.../selenium/` | `evidence/task-09/` |
 | 10 | Continuous Testing in Jenkins | ✅ Done | `docs/10-continuous-testing.md` | `evidence/task-10/` |
-| 11 | Docker Image and Container Lifecycle | ⬜ Pending | `Dockerfile`, `docs/11-docker.md` | `evidence/task-11/` |
+| 11 | Docker Image and Container Lifecycle | ✅ Done | `Dockerfile`, `docs/11-docker.md` | `evidence/task-11/` |
 | 12 | Jenkins-Docker Continuous Deployment | ⬜ Pending | `Jenkinsfile` (CD stages) | `evidence/task-12/` |
 | 13 | Configuration Management Script | ⬜ Pending | `ansible/` | `evidence/task-13/` |
 | 14 | Automated Provisioning and Reliability Validation | ⬜ Pending | `docs/14-provisioning.md` | `evidence/task-14/` |

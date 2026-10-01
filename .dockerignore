@@ -1,0 +1,5 @@
+# Only the built WAR is needed in the build context. Excluding the rest keeps the
+# context small and stops local state (databases, evidence, the Jenkins volume)
+# from being sent to the daemon or baked into a layer.
+*
+!target/attendance-portal.war
