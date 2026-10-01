@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head th:replace="~{fragments/layout :: head('Students')}"></head>
+<body>
+<header th:replace="~{fragments/layout :: topbar}"></header>
+<main>
+  <h1>Students</h1>
+  <p class="sub">Master data. Each student has a unique roll number and a portal login.</p>
+  <div class="card">
+    <table data-testid="students-table">
+      <thead><tr><th>Roll number</th><th>Name</th><th>Login</th></tr></thead>
+      <tbody>
+        <tr th:each="s : ${students}" th:attr="data-testid='student-' + ${s.rollNumber}">
+          <td class="mono" th:text="${s.rollNumber}">22CS001</td>
+          <td th:text="${s.fullName}">Name</td>
+          <td class="mono" th:text="${s.appUser != null} ? ${s.appUser.username} : '—'">22cs001</td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(students)}">
+          <td colspan="3" class="empty">No students enrolled.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+</body>
+</html>

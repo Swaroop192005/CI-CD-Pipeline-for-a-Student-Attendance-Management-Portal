@@ -190,5 +190,5 @@ merge a red build.
 
 ## Status
 
-Task 5 of 15 complete — attendance capture and the records list are working,
-delivered through a reviewed pull request.
+Task 6 of 15 complete — master data screens added for courses and students,
+completing the administrative side of the MVP.
