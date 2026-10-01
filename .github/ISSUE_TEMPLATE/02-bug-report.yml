@@ -1,0 +1,49 @@
+name: Bug report
+description: Something behaves differently from its acceptance criteria
+title: "[BUG] <what is wrong>"
+labels: ["bug"]
+body:
+  - type: textarea
+    id: expected-actual
+    attributes:
+      label: Expected vs actual
+      value: |
+        **Expected:** <what the acceptance criteria say should happen>
+        **Actual:** <what happens instead>
+    validations: { required: true }
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+        3.
+    validations: { required: true }
+  - type: input
+    id: broken-ac
+    attributes:
+      label: Violated acceptance criterion
+      placeholder: AC-12.2 — a FACULTY user must not be able to approve
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where was it found?
+      options:
+        - Local development
+        - Jenkins build (unit tests)
+        - Jenkins pipeline (Selenium gate)
+        - Deployed container
+        - Manual testing
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Build number, console output, or the failure screenshot path under `docs/evidence/`
+  - type: checkboxes
+    id: regression
+    attributes:
+      label: Regression guard
+      options:
+        - label: A failing test reproducing this bug will be added before the fix

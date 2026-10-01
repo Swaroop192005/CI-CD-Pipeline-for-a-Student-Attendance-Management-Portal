@@ -1,0 +1,23 @@
+$ sh -c 
+curl -s https://api.github.com/repos/Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal | python3 -c "
+import json,sys; r=json.load(sys.stdin)
+for k in [\"full_name\",\"html_url\",\"visibility\",\"default_branch\",\"size\",\"open_issues_count\",\"created_at\",\"pushed_at\"]:
+    print(f\"{k:20} {r.get(k)}\")
+"
+echo; echo "Branches on origin:"; git ls-remote --heads origin | sed "s|.*refs/heads/|  |"
+# executed 2026-10-01 14:19:25 UTC on Linux 6.18.44-fc-v50
+
+sh: 0: -c requires an argument
+full_name            Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal
+html_url             https://github.com/Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal
+visibility           public
+default_branch       claude/determined-goldberg-ml3brm
+size                 0
+open_issues_count    6
+created_at           2026-10-01T13:28:45Z
+pushed_at            2026-10-01T14:14:10Z
+
+Branches on origin:
+  claude/determined-goldberg-ml3brm
+
+[exit code: 0]

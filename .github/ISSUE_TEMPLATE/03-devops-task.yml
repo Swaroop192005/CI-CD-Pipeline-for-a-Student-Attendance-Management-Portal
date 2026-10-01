@@ -1,0 +1,29 @@
+name: DevOps / pipeline task
+description: Work on the build, test, release, deployment or provisioning pipeline
+title: "[OPS] <short title>"
+labels: ["devops"]
+body:
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Lifecycle stage
+      options: ["Plan", "Code", "Build", "Test", "Release", "Deploy", "Operate", "Monitor"]
+    validations: { required: true }
+  - type: dropdown
+    id: tool
+    attributes:
+      label: Tool
+      options: ["Git / GitHub", "Maven", "Jenkins", "Selenium", "Docker", "Ansible", "Tomcat", "Other"]
+    validations: { required: true }
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What must be true when this is done?
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence required
+      description: Which screenshot/log must land in `docs/evidence/task-NN/`? See docs/evidence/README.md.
+    validations: { required: true }

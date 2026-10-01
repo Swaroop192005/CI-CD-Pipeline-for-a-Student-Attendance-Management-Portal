@@ -84,8 +84,26 @@ These rules are what make the pack worth anything at a viva:
 | 03 | `health-and-config.png` / `.log` | Health JSON and the externalised settings in effect |
 | 03 | `use-case.png`, `architecture.png`, `er-model.png`, `workflow-state-machine.png` | Design diagrams rendered from committed `.mmd` sources |
 | 03 | `git-commit-evidence.png` / `.log` | The Task 3 commit |
+| 04 | `github-issues.png` / `.log` | The 6 issues raised from the backlog, read from the GitHub REST API |
+| 04 | `github-repo-metadata.png` / `.log` | Repository visibility, default branch and remote branches |
+| 04 | `git-log-graph.png` / `.log` | Commit history showing the Conventional Commits convention in use |
+| 04 | `repo-structure.png` / `.log` | Tracked files after repository initialisation |
+| 04 | `branch-and-remote.png` / `.log` | Branch tracking, remote and `.gitignore` rule count |
+| 04 | `git-commit-evidence.png` / `.log` | The Task 4 commit |
 
 *(the table is extended as each task lands)*
+
+## GitHub's web UI cannot be screenshotted here
+
+The network policy permits `github.com` and `api.github.com` but blocks
+`github.githubassets.com`, which serves all of GitHub's CSS and JavaScript.
+Headless Chromium therefore renders GitHub pages as unstyled HTML, which is
+worthless as evidence, so those captures were discarded rather than committed.
+
+**GitHub-side artefacts (issues, repository metadata, branches) are evidenced from
+the GitHub REST API instead** — real data, independently verifiable by re-running
+the same request. For the final report, capture GitHub UI screenshots from an
+ordinary browser.
 
 ## A note on the two rendered diagrams
 

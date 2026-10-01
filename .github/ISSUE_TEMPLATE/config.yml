@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Product backlog and Definition of Done
+    url: https://github.com/Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/blob/main/docs/02-agile-planning.md
+    about: Read the backlog, Definition of Ready and Definition of Done before opening an issue.
+  - name: Architecture and data model
+    url: https://github.com/Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal/blob/main/docs/03-architecture.md
+    about: Requirements, diagrams, endpoints and configuration.

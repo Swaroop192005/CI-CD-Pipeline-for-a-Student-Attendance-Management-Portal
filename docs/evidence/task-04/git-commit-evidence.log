@@ -1,0 +1,54 @@
+$ git show --stat --no-patch HEAD
+# executed 2026-10-01 14:20:57 UTC on Linux 6.18.44-fc-v50
+
+[33mcommit 909be605396180df5725f5c7cb02aee4445ad44c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mclaude/determined-goldberg-ml3brm[m[33m)[m[m
+Author: Swaroop192005 <naikswaroop1910@gmail.com>[m
+Date:   Thu Oct 1 14:20:57 2026 +0000[m
+[m
+    docs(task-04): initialise repository with README, templates and branch policy[m
+    [m
+    Make the repository usable by someone who has never seen it, and make the[m
+    workflow rules explicit before feature work starts in Task 5.[m
+    [m
+    README[m
+    - Rewritten as a full entry point: why the project exists, what it does mapped to[m
+      the user stories, technology table with rationale, quick start, the complete[m
+      externalised-configuration table, project structure and documentation index.[m
+    [m
+    .gitignore[m
+    - Expanded to 43 grouped rules. Three deliberate decisions: `!docs/evidence/**/*.log`[m
+      negates the blanket `*.log` so evidence logs stay tracked alongside the[m
+      screenshots rendered from them; `data/` and `*.mv.db` keep the disposable H2[m
+      database out so repository state does not depend on who ran the app last; and[m
+      secrets (.env, *.key, vault passwords, credentials.properties) are excluded[m
+      because registry and deployment credentials come from Jenkins credentials[m
+      binding, never from the repository.[m
+    [m
+    GitHub metadata[m
+    - Three issue templates with blank issues disabled, so every issue arrives[m
+      actionable: user story (backlog ID, Given/When/Then, epic, MoSCoW, points and[m
+      the data-testid hooks Selenium will need), bug report (expected vs actual, the[m
+      violated acceptance criterion, and a commitment to a failing test before the[m
+      fix), and DevOps task (lifecycle stage, tool, and which evidence artefact must[m
+      be produced).[m
+    - Pull request template requiring verification commands actually run and their[m
+      real result, followed by the Definition of Done as a checklist.[m
+    [m
+    CONTRIBUTING.md[m
+    - Branch policy: main and develop as long-lived; short-lived branches named[m
+      <type>/<backlog-id>-<description> with the backlog ID mandatory for feature,[m
+      bugfix and hotfix; integrate develop into your branch, never the reverse.[m
+    - Conventional Commits with the accepted type list and examples of what is not[m
+      acceptable; annotated semantic version tags.[m
+    [m
+    Six issues raised from the backlog covering Tasks 5, 6 and 10.[m
+    [m
+    Limitation recorded: GitHub's web UI cannot be screenshotted from this[m
+    environment because github.githubassets.com (all of its CSS/JS) is blocked by the[m
+    network policy, so pages render unstyled. GitHub-side evidence is taken from the[m
+    REST API instead, and the unusable captures were discarded rather than committed.[m
+    [m
+    Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>[m
+    Claude-Session: https://claude.ai/code/session_01VuE58DFZzXcMeu7bqLZ2L3[m
+[K
+[exit code: 0]

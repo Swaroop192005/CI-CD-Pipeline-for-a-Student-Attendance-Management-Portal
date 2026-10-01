@@ -1,24 +1,68 @@
-# Dependencies (expanded in Task 4)
-node_modules/
-scripts/capture/node_modules
+# ============================================================
+#  Student Attendance Management Portal — ignored paths
+# ============================================================
 
-# Build output
+# --- Java / Maven build output ---
 target/
+build/
 *.war
 *.jar
 *.class
+*.ear
+dependency-reduced-pom.xml
+.mvn/wrapper/maven-wrapper.jar
 
-# Local/IDE
-.idea/
-.vscode/
-*.iml
-.DS_Store
+# --- Node (evidence/diagram tooling only; declared in scripts/capture/package.json) ---
+node_modules/
+scripts/capture/node_modules
+package-lock.json
+npm-debug.log*
 
-# Runtime
-*.log
-!docs/evidence/**/*.log
+# --- Runtime data ---
+# H2 database files are disposable: data is re-seeded at startup
+data/
 *.db
 *.mv.db
 *.trace.db
-data/
 .run/
+
+# --- Logs ---
+# Evidence logs are deliberately committed: every screenshot ships with the
+# raw log it was rendered from (see docs/evidence/README.md)
+*.log
+!docs/evidence/**/*.log
+
+# --- Test / tooling output ---
+# Selenium failure screenshots are captured into docs/evidence/ by the suite,
+# so the raw surefire output itself is not tracked
+surefire-reports/
+failsafe-reports/
+test-output/
+screenshots/
+.selenium/
+
+# --- Secrets: never commit credentials ---
+# Docker Hub / registry tokens are supplied by Jenkins credentials binding
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.properties
+secrets.yml
+ansible/vault-password*
+
+# --- IDE / editor ---
+.idea/
+*.iml
+*.iws
+.vscode/
+.settings/
+.project
+.classpath
+*.swp
+*~
+
+# --- OS ---
+.DS_Store
+Thumbs.db

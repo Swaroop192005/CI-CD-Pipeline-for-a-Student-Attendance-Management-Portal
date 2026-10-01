@@ -36,6 +36,9 @@ const height   = parseInt(arg('height', '820'), 10);
 const waitFor  = arg('wait-for', null);
 const stepsArg = arg('steps', null);
 const timeout  = parseInt(arg('timeout', '30000'), 10);
+// Sites with long-polling or websockets (GitHub, Jenkins) never reach
+// 'networkidle'; --wait-until load/domcontentloaded handles those.
+const waitUntil = arg('wait-until', 'networkidle');
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 (async () => {
@@ -44,7 +47,7 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
   const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 2, ignoreHTTPSErrors: true });
   const page = await ctx.newPage();
 
-  const resp = await page.goto(url, { waitUntil: 'networkidle', timeout });
+  const resp = await page.goto(url, { waitUntil, timeout });
   if (resp && resp.status() >= 400) throw new Error(`${url} returned HTTP ${resp.status()}`);
 
   if (stepsArg) {
@@ -57,11 +60,11 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
       else if (s.press !== undefined)  await page.press(s.press, s.value || 'Enter', { timeout });
       else if (s.waitFor !== undefined)    await page.waitForSelector(s.waitFor, { timeout });
       else if (s.waitForUrl !== undefined) await page.waitForURL(s.waitForUrl, { timeout });
-      else if (s.goto !== undefined)       await page.goto(s.goto, { waitUntil: 'networkidle', timeout });
+      else if (s.goto !== undefined)       await page.goto(s.goto, { waitUntil, timeout });
     }
   }
   if (waitFor) await page.waitForSelector(waitFor, { timeout });
-  await page.waitForLoadState('networkidle', { timeout }).catch(() => {});
+  await page.waitForLoadState('networkidle', { timeout: 8000 }).catch(() => {});
 
   const finalUrl = page.url();
   const shotOpts = { fullPage: has('full-page') };

@@ -56,7 +56,7 @@ successes, and every terminal image ships with the log it was rendered from.
 | 1 | Problem Definition and Scope | ✅ Done | `docs/01-problem-definition-and-scope.md` | `evidence/task-01/` |
 | 2 | Agile Planning and DevOps Workflow | ✅ Done | `docs/02-agile-planning.md` | `evidence/task-02/` |
 | 3 | Requirements, Architecture and Technology Setup | ✅ Done | `docs/03-architecture.md` | `evidence/task-03/` |
-| 4 | Git and GitHub Repository Initialization | ⬜ Pending | `README.md`, `.gitignore`, `.github/` | `evidence/task-04/` |
+| 4 | Git and GitHub Repository Initialization | ✅ Done | `docs/04-git-repository.md`, `README.md`, `.github/` | `evidence/task-04/` |
 | 5 | Feature Development with Branching | ⬜ Pending | feature branch + PR | `evidence/task-05/` |
 | 6 | MVP Completion and Git Collaboration | ⬜ Pending | tagged release `v1.0.0` | `evidence/task-06/` |
 | 7 | Jenkins Installation and CI Job | ⬜ Pending | `docs/07-jenkins-ci.md`, `jenkins/` | `evidence/task-07/` |
