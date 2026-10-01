@@ -51,20 +51,39 @@ fi
 ok "JDK major version $MAJOR"
 
 step "2. Building and running the unit tests"
-if mvn -B clean package 2>&1 | tail -40 | grep -q "BUILD SUCCESS"; then
-  ok "build succeeded, 37 unit tests passed"
+BUILD_LOG="$(mktemp)"
+if mvn -B clean package >"$BUILD_LOG" 2>&1; then
+  # Report the real count rather than a hard-coded one, which goes stale the
+  # moment a test is added.
+  TESTS=$(grep -oE "Tests run: [0-9]+, Failures: 0, Errors: 0" "$BUILD_LOG" | tail -1 | grep -oE "[0-9]+" | head -1)
+  ok "build succeeded, ${TESTS:-all} unit tests passed"
   note "artefact: target/attendance-portal.war"
 else
-  bad "build failed - run 'mvn clean package' to see why"; exit 1
+  bad "build failed"
+  tail -25 "$BUILD_LOG" | sed 's/^/      /'
+  exit 1
 fi
+rm -f "$BUILD_LOG"
 
 step "3. Starting the application"
+# A previous run still holding the port is the most common cause of a failed
+# start, and it also locks the H2 database file. Detect it and say so plainly
+# rather than leaving the user to read a stack trace.
+if command -v lsof >/dev/null 2>&1 && lsof -ti:8080 >/dev/null 2>&1; then
+  bad "port 8080 is already in use by PID $(lsof -ti:8080 | tr '\n' ' ')"
+  note "an earlier run of this app is probably still going. Free it with:"
+  note "    scripts/demo-up.sh --down"
+  note "    lsof -ti:8080 | xargs kill -9"
+  exit 1
+fi
 rm -rf data
 if scripts/app-control.sh start --port 8080 --timeout 120 | tail -1 | grep -q "UP after"; then
   ok "application healthy on http://localhost:8080"
   note "sign in: faculty1/faculty123 · admin/admin123 · 22cs001/student123"
 else
-  bad "application did not start - see .run/app.log"; exit 1
+  bad "application did not start. Last lines of .run/app.log:"
+  tail -25 .run/app.log 2>/dev/null | sed 's/^/      /'
+  exit 1
 fi
 
 if [ "$MODE" != "--full" ]; then
