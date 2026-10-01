@@ -1,0 +1,50 @@
+# Jenkins for the Student Attendance Management Portal.
+#
+# The image is jenkinsci/blueocean, which ships ~90 plugins baked in (Pipeline,
+# Git, JUnit, credentials-binding). That choice is forced: this build environment
+# blocks updates.jenkins.io and every Jenkins artifact mirror by network policy,
+# so plugins cannot be installed at runtime. Docker Hub is reachable, so a
+# pre-baked image is the only way to get a plugin-complete Jenkins here.
+#
+# network_mode: host is likewise deliberate. The outbound HTTPS proxy listens on
+# the host loopback, so a bridged container could not reach GitHub or Maven
+# Central. Host networking lets Jenkins use the same egress path as everything else.
+services:
+  jenkins:
+    build: .
+    image: samp-jenkins:1.0
+    container_name: samp-jenkins
+    network_mode: host
+    restart: unless-stopped
+    environment:
+      # Port 8090 keeps Jenkins clear of the application on 8080 (port map, Task 3).
+      JENKINS_OPTS: "--httpPort=8090"
+      # Skip the setup wizard: the admin user and security realm are created by
+      # the init.groovy.d scripts instead, so the instance is reproducible.
+      # ALLOW_LOCAL_CHECKOUT is the documented fallback: the Git plugin refuses a
+      # local-directory SCM without it, and it is needed if GitHub is unreachable.
+      JAVA_OPTS: >-
+        -Djenkins.install.runSetupWizard=false
+        -Dhudson.model.DownloadService.noSignatureCheck=true
+        -Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true
+      HTTP_PROXY:  "${HTTP_PROXY:-}"
+      HTTPS_PROXY: "${HTTPS_PROXY:-}"
+      NO_PROXY:    "localhost,127.0.0.1"
+      # Outbound HTTPS is intercepted by the agent proxy, so git inside the
+      # container must trust its CA or every clone fails TLS verification.
+      GIT_SSL_CAINFO: "/etc/ssl/certs/agent-proxy-ca.crt"
+      SAMP_REPO_URL: "${SAMP_REPO_URL:-https://github.com/Swaroop192005/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal.git}"
+      SAMP_REPO_BRANCH: "${SAMP_REPO_BRANCH:-*/claude/determined-goldberg-ml3brm}"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - ./init.groovy.d:/usr/share/jenkins/ref/init.groovy.d:ro
+      # Toolchain mounted from the host: the image has no JDK 17 or Maven, and
+      # package installation is blocked by the same network policy.
+      - ${HOST_MAVEN:-/usr/share/maven}:/opt/maven:ro
+      # Warm Maven cache so builds do not re-download the world on every run.
+      - ${HOME}/.m2:/var/maven-cache
+      - /root/.ccr/ca-bundle.crt:/etc/ssl/certs/agent-proxy-ca.crt:ro
+      # The working clone, so a job can use it as an SCM source without network.
+      - ${REPO_PATH:-/home/user/CI-CD-Pipeline-for-a-Student-Attendance-Management-Portal}:/workspace/samp:ro
+volumes:
+  jenkins_home:
