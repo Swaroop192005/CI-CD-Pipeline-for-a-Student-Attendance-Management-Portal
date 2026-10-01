@@ -21,6 +21,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private final RoleBasedSuccessHandler successHandler;
+
+    public SecurityConfig(RoleBasedSuccessHandler successHandler) {
+        this.successHandler = successHandler;
+    }
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -39,7 +45,10 @@ public class SecurityConfig {
                 .anyRequest().authenticated())
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/attendance", false)
+                // Role-based landing page. A single fixed URL cannot serve all
+                // three roles: sending a STUDENT to /attendance authenticated them
+                // and then immediately refused them with 403.
+                .successHandler(successHandler)
                 .failureUrl("/login?error")
                 .permitAll())
             .logout(logout -> logout

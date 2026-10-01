@@ -126,6 +126,7 @@ Every entry below was hit and solved during this project.
 | Selenium screenshots never written | `TestWatcher` fires after `@AfterEach` has called `driver.quit()` | Use `AfterTestExecutionCallback` |
 | `Node with given id does not belong to the document` | Element list held across a navigation | Re-find inside the loop; catch `StaleElementReferenceException` |
 | Test passes but tests the wrong user | `GET /logout` does nothing — Spring Security logout is POST-only | Clear cookies, or POST |
+| **403 immediately after a successful login** | `defaultSuccessUrl` sends every role to one page; a STUDENT has no access to `/attendance` | Role-based `AuthenticationSuccessHandler` — ADMIN→`/dashboard`, FACULTY→`/attendance`, STUDENT→`/my-attendance` |
 
 ### Jenkins
 

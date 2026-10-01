@@ -59,6 +59,10 @@ These were all hit during the build; the full list is in `docs/15-final-report.m
   `LazyInitializationException`. Service tests run inside `@Transactional` and
   will **not** catch it; `AttendanceListRenderingTest` renders outside one.
 - H2 2.x rejects `AUTO_SERVER=TRUE` combined with `DB_CLOSE_ON_EXIT=FALSE`.
+- The post-login landing page is **role-based** (`RoleBasedSuccessHandler`). A
+  single `defaultSuccessUrl` cannot work: the three roles have disjoint landing
+  pages, and sending a STUDENT to `/attendance` authenticates them and then 403s
+  on the very next request.
 - Spring Security accepts logout only as **POST**; `GET /logout` silently does
   nothing and leaves you signed in as the previous user.
 - Jenkins learns a pipeline's parameters only by *running* the Jenkinsfile once,
