@@ -13,6 +13,12 @@ DevOps toolchain: **Git/GitHub → Jenkins → Maven → Selenium → Docker →
 |---|---|
 | 1 | [Problem Definition and Scope](docs/01-problem-definition-and-scope.md) |
 
+## Evidence
+
+Every task leaves screenshot proof in [`docs/evidence/`](docs/evidence/README.md),
+captured by the committed tooling in [`scripts/capture/`](scripts/capture/):
+real commands with their raw logs, and real pages served to headless Chromium.
+
 ## Current status
 
 Task 1 of 15 complete — scope frozen.

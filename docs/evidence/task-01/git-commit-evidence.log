@@ -1,0 +1,31 @@
+$ git show --stat --no-patch b4ea3a1
+# executed 2026-10-01 13:42:40 UTC on Linux 6.18.44-fc-v50
+
+[33mcommit b4ea3a1b2ff3b1b9eb68c090d6e4f9e6f59023d1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mclaude/determined-goldberg-ml3brm[m[33m, [m[1;31morigin/claud[m [33m[m[33m[m[1;36m[m[33m[m[1;32m[m[33m[m[1;31me/determined-goldberg-ml3brm[m[33m)[m[m
+Author: Swaroop192005 <naikswaroop1910@gmail.com>[m
+Date:   Thu Oct 1 13:32:08 2026 +0000[m
+[m
+    docs(task-01): define problem, stakeholders, constraints and frozen MVP scope[m
+    [m
+    Establish the baseline for the Student Attendance Management Portal project:[m
+    [m
+    - Problem statement covering both the attendance-tracking need and the[m
+      delivery/automation need that the CI/CD pipeline addresses.[m
+    - Stakeholder list split into primary users (FACULTY, ADMIN, STUDENT) and[m
+      secondary stakeholders, with an influence map.[m
+    - 12 catalogued pain points (P1-P12), each mapped to the task that resolves it.[m
+    - Product objectives O1-O4 and DevOps objectives O5-O10.[m
+    - Technical, project and assumption constraints (C1-C13, A1-A4).[m
+    - 18 measurable success criteria (S1-S18), each tied to a concrete artefact.[m
+    - Frozen MVP scope with an explicit out-of-scope list and a change-control rule[m
+      that keeps the delivery at exactly 15 tasks.[m
+    - Initial risk register (R1-R6).[m
+    [m
+    Also adds the master plan/progress tracker with the frozen technology stack[m
+    (Java 17 + Spring Boot, Maven, Tomcat 10.1, H2, Jenkins, Selenium, Docker,[m
+    Ansible) so that later tasks build against a stable target.[m
+    [m
+    Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>[m
+    Claude-Session: https://claude.ai/code/session_01VuE58DFZzXcMeu7bqLZ2L3[m
+[K
+[exit code: 0]

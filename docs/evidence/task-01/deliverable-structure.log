@@ -1,0 +1,12 @@
+$ sh -c ls -R docs | head -30 && echo && wc -l docs/*.md
+# executed 2026-10-01 13:42:40 UTC on Linux 6.18.44-fc-v50
+
+README.md
+docs
+scripts
+
+   72 docs/00-PROJECT-PLAN.md
+  305 docs/01-problem-definition-and-scope.md
+  377 total
+
+[exit code: 0]

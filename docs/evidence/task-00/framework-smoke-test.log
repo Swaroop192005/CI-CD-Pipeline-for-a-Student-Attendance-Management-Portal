@@ -1,0 +1,10 @@
+$ git log --oneline --stat -1
+# executed 2026-10-01 13:40:12 UTC on Linux 6.18.44-fc-v50
+
+[33mb4ea3a1[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mclaude/determined-goldberg-ml3brm[m[33m, [m[1;31morigin/claude/determined-goldberg-ml3brm[m[33m)[m docs(task-01): define problem, stakeholders, constraints and frozen MVP scope[m
+ README.md                               |  18 [32m+++++++++[m[m
+ docs/00-PROJECT-PLAN.md                 |  56 [32m++++++++++++++++++++++++++++[m[m
+ docs/01-problem-definition-and-scope.md | 305 [32m++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[m[m
+ 3 files changed, 379 insertions(+)[m
+[K
+[exit code: 0]

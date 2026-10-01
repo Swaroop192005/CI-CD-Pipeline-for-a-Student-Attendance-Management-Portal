@@ -33,24 +33,40 @@ tasks, so that the pipeline built in Tasks 7-15 has a stable target.
 
 ---
 
+## Standing rule: visual evidence for every task
+
+Every task must leave **screenshot proof** in `docs/evidence/task-NN/`, captured
+by the committed tooling in `scripts/capture/`:
+
+* `run-and-shot.sh` — runs a command for real, keeps the raw `.log`, renders the
+  transcript to `.png`.
+* `shot-web.js` — drives headless Chromium against a genuinely running server
+  (app, dashboard, Jenkins UI) and frames the capture with the live URL.
+
+Rules and the full index: [`docs/evidence/README.md`](evidence/README.md).
+Screenshots are never mocked or edited, failures are captured as well as
+successes, and every terminal image ships with the log it was rendered from.
+
+---
+
 ## Task status
 
-| # | Task | Status | Deliverable location |
-|---|---|---|---|
-| 1 | Problem Definition and Scope | ✅ Done | `docs/01-problem-definition-and-scope.md` |
-| 2 | Agile Planning and DevOps Workflow | ⬜ Pending | `docs/02-agile-planning.md` |
-| 3 | Requirements, Architecture and Technology Setup | ⬜ Pending | `docs/03-architecture.md` |
-| 4 | Git and GitHub Repository Initialization | ⬜ Pending | `README.md`, `.gitignore`, `.github/` |
-| 5 | Feature Development with Branching | ⬜ Pending | feature branch + PR |
-| 6 | MVP Completion and Git Collaboration | ⬜ Pending | tagged release `v1.0.0` |
-| 7 | Jenkins Installation and CI Job | ⬜ Pending | `docs/07-jenkins-ci.md`, `jenkins/` |
-| 8 | Pipeline as Code and Server Deployment | ⬜ Pending | `Jenkinsfile` |
-| 9 | Selenium Test Design and Local Execution | ⬜ Pending | `src/test/java/.../selenium/` |
-| 10 | Continuous Testing in Jenkins | ⬜ Pending | `docs/10-continuous-testing.md` |
-| 11 | Docker Image and Container Lifecycle | ⬜ Pending | `Dockerfile`, `docs/11-docker.md` |
-| 12 | Jenkins-Docker Continuous Deployment | ⬜ Pending | `Jenkinsfile` (CD stages) |
-| 13 | Configuration Management Script | ⬜ Pending | `ansible/` |
-| 14 | Automated Provisioning and Reliability Validation | ⬜ Pending | `docs/14-provisioning.md` |
-| 15 | Final End-to-End Release, Documentation and Viva | ⬜ Pending | `docs/15-final-report.md` |
+| # | Task | Status | Deliverable location | Evidence |
+|---|---|---|---|---|
+| 1 | Problem Definition and Scope | ✅ Done | `docs/01-problem-definition-and-scope.md` | `evidence/task-01/` |
+| 2 | Agile Planning and DevOps Workflow | ⬜ Pending | `docs/02-agile-planning.md` | `evidence/task-02/` |
+| 3 | Requirements, Architecture and Technology Setup | ⬜ Pending | `docs/03-architecture.md` | `evidence/task-03/` |
+| 4 | Git and GitHub Repository Initialization | ⬜ Pending | `README.md`, `.gitignore`, `.github/` | `evidence/task-04/` |
+| 5 | Feature Development with Branching | ⬜ Pending | feature branch + PR | `evidence/task-05/` |
+| 6 | MVP Completion and Git Collaboration | ⬜ Pending | tagged release `v1.0.0` | `evidence/task-06/` |
+| 7 | Jenkins Installation and CI Job | ⬜ Pending | `docs/07-jenkins-ci.md`, `jenkins/` | `evidence/task-07/` |
+| 8 | Pipeline as Code and Server Deployment | ⬜ Pending | `Jenkinsfile` | `evidence/task-08/` |
+| 9 | Selenium Test Design and Local Execution | ⬜ Pending | `src/test/java/.../selenium/` | `evidence/task-09/` |
+| 10 | Continuous Testing in Jenkins | ⬜ Pending | `docs/10-continuous-testing.md` | `evidence/task-10/` |
+| 11 | Docker Image and Container Lifecycle | ⬜ Pending | `Dockerfile`, `docs/11-docker.md` | `evidence/task-11/` |
+| 12 | Jenkins-Docker Continuous Deployment | ⬜ Pending | `Jenkinsfile` (CD stages) | `evidence/task-12/` |
+| 13 | Configuration Management Script | ⬜ Pending | `ansible/` | `evidence/task-13/` |
+| 14 | Automated Provisioning and Reliability Validation | ⬜ Pending | `docs/14-provisioning.md` | `evidence/task-14/` |
+| 15 | Final End-to-End Release, Documentation and Viva | ⬜ Pending | `docs/15-final-report.md` | `evidence/task-15/` |
 
 Legend: ⬜ Pending · 🟨 In progress · ✅ Done
